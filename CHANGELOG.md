@@ -2,6 +2,11 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 2.7.0
+
+* Revert commit baffdd5591761e967957ad71cbe22a4196b32615 because of
+  an incorrect implementation of `count()` in the `ServerDataSource` 
+
 ## Version 2.6.0
 
 * Adds (editCancel) and (createCancel) events

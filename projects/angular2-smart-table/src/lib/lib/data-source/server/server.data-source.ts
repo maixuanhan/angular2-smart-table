@@ -23,9 +23,8 @@ export class ServerDataSource extends LocalDataSource {
     }
   }
 
-  override count(total: boolean = false): number {
-    // note: in contrast to the local data source, the data array contains the (server-side) filtered data
-    return total ? this.lastRequestCount : this.data.length;
+  override count(): number {
+    return this.lastRequestCount;
   }
 
   override getAll(): Promise<any> {
@@ -45,7 +44,6 @@ export class ServerDataSource extends LocalDataSource {
       .pipe(map(res => {
         this.lastRequestCount = this.extractTotalFromResponse(res);
         this.data = this.extractDataFromResponse(res);
-
         return this.data;
       })));
   }

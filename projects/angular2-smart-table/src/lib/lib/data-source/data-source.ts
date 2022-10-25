@@ -31,7 +31,11 @@ export abstract class DataSource {
   abstract getSort(): Array<ISortConfig>;
   abstract getFilter(): IDataSourceFilter;
   abstract getPaging(): any;
-  abstract count(total?: boolean): number;
+
+  /**
+   * Returns the total number of elements with respect to the current filter.
+   */
+  abstract count(): number;
   abstract toggleItem(row: any, isSelected: boolean): void;
   abstract selectAllItems(checked: boolean): Promise<void>;
   abstract getSelectedItems(): Array<any>;
