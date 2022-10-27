@@ -17,7 +17,8 @@ import {
   DeleteEvent,
   EditCancelEvent,
   EditConfirmEvent,
-  EditEvent
+  EditEvent,
+  RowSelectionEvent,
 } from './lib/events';
 
 @Component({
@@ -30,9 +31,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   @Input() source: any;
   @Input() settings: Settings = {};
 
-  @Output() rowSelect = new EventEmitter<any>();
-  @Output() rowDeselect = new EventEmitter<any>();
-  @Output() userRowSelect = new EventEmitter<any>();
+  @Output() rowSelect = new EventEmitter<RowSelectionEvent>();
+  @Output() userRowSelect = new EventEmitter<RowSelectionEvent>();
   @Output() delete = new EventEmitter<DeleteEvent>();
   @Output() edit = new EventEmitter<EditEvent>();
   @Output() create = new EventEmitter<CreateEvent>();
@@ -155,7 +155,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.grid.settings.selectedRowIndex = index;
     if (this.isIndexOutOfRange(index)) {
       // we need to deselect all rows if we got an incorrect index
-      this.deselectAllRows();
+      this.grid.dataSet.deselectAll();
+      this.emitSelectRow(null);
       return;
     }
 
@@ -177,21 +178,11 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     if (row) {
       this.grid.selectRow(row);
       this.emitSelectRow(row);
-    } else {
-      // we need to deselect all rows if we got an incorrect index
-      this.deselectAllRows();
     }
   }
 
-  private deselectAllRows(): void {
-    this.grid.dataSet.deselectAll();
-    this.emitDeselectRow(null);
-  }
-
   onEditRowSelect(row: Row) {
-    if (this.grid.getSetting('selectMode') === 'multi') {
-      this.emitSelectRow(row);
-    } else {
+    if (this.grid.getSetting('selectMode') !== 'multi') {
       this.grid.selectRow(row);
       this.emitSelectRow(row);
     }
@@ -201,7 +192,6 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     if (this.grid.getSetting('selectMode') !== 'multi') {
       this.grid.selectRow(row);
       this.emitUserSelectRow(row);
-      this.emitSelectRow(row);
     }
   }
 
@@ -209,18 +199,15 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.rowHover.emit(row);
   }
 
-  multipleSelectRow(row: Row) {
+  onMultipleSelectRow(row: Row) {
     this.grid.multipleSelectRow(row);
     this.emitUserSelectRow(row);
-    this.emitSelectRow(row);
   }
 
   async onSelectAllRows() {
     this.isAllSelected = !this.isAllSelected;
     await this.grid.selectAllRows(this.isAllSelected);
-
     this.emitUserSelectRow(null);
-    this.emitSelectRow(null);
   }
 
   onExpandRow(row: Row) {
@@ -232,7 +219,6 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.grid = new Grid(this.source, this.prepareSettings());
 
     this.subscribeToOnSelectRow();
-    this.subscribeToOnDeselectRow();
     /** Delay a bit the grid init event trigger to prevent empty rows */
     setTimeout(() => {
       this.afterGridInit.emit(this.grid.dataSet);
@@ -268,46 +254,28 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.grid.setSettings(this.prepareSettings());
   }
 
-  private emitUserSelectRow(row: Row | null) {
-    const selectedRows = this.grid.getSelectedRows();
-    const selectedItems = this.grid.getSelectedItems();
-
-    this.userRowSelect.emit({
+  private createRowSelectionEvent(row: Row | null): RowSelectionEvent {
+    return {
+      row: row,
       data: row ? row.getData() : null,
       isSelected: row ? row.getIsSelected() : null,
       source: this.source,
-      selected: selectedRows && selectedRows.length ? selectedRows.map((r: Row) => r.getData()) : [],
-      selectedItems,
-    });
+      selected: this.grid.getSelectedItems(),
+    };
+  }
+
+  private emitUserSelectRow(row: Row | null) {
+    this.userRowSelect.emit(this.createRowSelectionEvent(row));
+    // always also emit the general event
+    this.emitSelectRow(row);
   }
 
   private emitSelectRow(row: Row | null) {
-    const data = {
-      data: row ? row.getData() : null,
-      isSelected: row ? row.getIsSelected() : null,
-      isExpanded: row ? row.getIsExpanded() : null,
-      source: this.source,
-    };
-    this.rowSelect.emit(data);
-    if (!row?.isSelected) {
-      this.rowDeselect.emit(data);
-    }
-    if (!row?.isExpanded) {
-      this.rowDeselect.emit(data);
-    }
-  }
-
-  private emitDeselectRow(row: Row | null): void {
-    if (row)
-      this.rowDeselect.emit({
-        data: row ? row.getData() : null,
-        isSelected: row ? row.getIsSelected() : null,
-        source: this.source,
-      });
+    this.rowSelect.emit(this.createRowSelectionEvent(row));
   }
 
   private isIndexOutOfRange(index: number): boolean {
-    const dataAmount: number = this.source?.count();
+    const dataAmount = this.source?.count();
     return index < 0 || (typeof dataAmount === 'number' && index >= dataAmount);
   }
 
@@ -321,16 +289,4 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
         this.emitSelectRow(row);
       });
   }
-
-  private subscribeToOnDeselectRow(): void {
-    if (this.onDeselectRowSubscription) {
-      this.onDeselectRowSubscription.unsubscribe();
-    }
-    this.onDeselectRowSubscription = this.grid.onDeselectRow()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((row) => {
-        this.emitDeselectRow(row);
-      });
-  }
-
 }

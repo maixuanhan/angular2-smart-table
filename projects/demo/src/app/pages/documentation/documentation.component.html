@@ -776,12 +776,16 @@
       <td>
         event: <span class="highlight">Object</span>, consist of:
         <ul>
-          <li>data: <span class="highlight">Object</span> - selected row data object</li>
+          <li>row: <span class="highlight">Object | null</span> - the row or null when all rows are meant</li>
+          <li>data: <span class="highlight">Object | null</span> - selected row data object</li>
+          <li>isSelected: <span class="highlight">boolean | null</span> - the new selection state of 'data'</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
+          <li>selected: <span class="highlight">Array</span> - the new array of selected elements</li>
         </ul>
       </td>
       <td>
-        Triggered once a row is selected (either clicked or selected automatically (after page is changed, after some row is deleted, etc)).
+        Triggered when the selection state changes.
+        The fields 'data' and 'isSelected' are null when 'row' is null.
       </td>
     </tr>
     <tr>
@@ -789,12 +793,16 @@
       <td>
         event: <span class="highlight">Object</span>, consist of:
         <ul>
-          <li>data: <span class="highlight">Object</span> - selected row data object</li>
+          <li>row: <span class="highlight">Object | null</span> - the row or null when all rows are meant</li>
+          <li>data: <span class="highlight">Object | null</span> - selected row data object</li>
+          <li>isSelected: <span class="highlight">boolean | null</span> - the new selection state of 'data'</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
+          <li>selected: <span class="highlight">Array</span> - the new array of selected elements</li>
         </ul>
       </td>
       <td>
         Triggered <strong>only</strong> on a user click event.
+        The fields 'data' and 'isSelected' are null when 'row' is null.
       </td>
     </tr>
     <tr>

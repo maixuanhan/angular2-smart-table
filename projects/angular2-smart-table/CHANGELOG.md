@@ -7,6 +7,8 @@ This document lists the changes introduced by this fork.
 * Revert commit baffdd5591761e967957ad71cbe22a4196b32615 because of
   an incorrect implementation of `count()` in the `ServerDataSource`
 * Adds more documentation for the `doEmit` flag of various methods.
+* Fixes emission of a deselect event when a row is selected but not expanded.
+* Fixes most issues with row selection and add strong types for the selection events.
 
 ## Version 2.6.0
 

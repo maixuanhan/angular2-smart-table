@@ -20,12 +20,11 @@ export class DataSet {
   }
 
   setData(data: Array<any>, selectedRows: Array<any> = []) {
-    const rows: Array<Row> = data.map((el, index) => {
+    this.data = data.map((el, index) => {
       const row = new Row(index, el, this);
       row.isSelected = selectedRows.indexOf(el) > -1;
       return row;
-    })
-    this.data = rows;
+    });
     this.createRows();
   }
 
@@ -92,15 +91,11 @@ export class DataSet {
 
     row.isSelected = !previousIsSelected;
     this.selectedRow = row;
-
-    //return this.selectedRow;
   }
 
-  multipleSelectRow(row: Row): Row {
+  multipleSelectRow(row: Row): void {
     row.isSelected = !row.isSelected;
     this.selectedRow = row;
-
-    return this.selectedRow;
   }
 
   expandRow(row: Row): Row {

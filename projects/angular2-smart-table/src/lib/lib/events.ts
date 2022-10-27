@@ -112,3 +112,26 @@ export interface CustomActionEvent {
    */
   source: DataSource;
 }
+
+export interface RowSelectionEvent {
+  /**
+   * The row triggering the event (null if all rows are affected).
+   */
+  row: Row | null;
+  /**
+   * Convenience shortcut for row.getData().
+   */
+  data: any | null;
+  /**
+   Convenience shortcut for row.isSelected().
+   */
+  isSelected: boolean | null;
+  /**
+   * The data source of the table.
+   */
+  source: DataSource;
+  /**
+   * The new array of selected elements.
+   */
+  selected: any[];
+}

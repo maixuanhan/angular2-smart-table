@@ -19,7 +19,6 @@ export class Grid {
   dataSet!: DataSet;
 
   onSelectRowSource = new Subject<any>();
-  onDeselectRowSource = new Subject<any>();
 
   private sourceOnChangedSubscription!: Subscription;
   private sourceOnUpdatedSubscription!: Subscription;
@@ -114,10 +113,6 @@ export class Grid {
     this.dataSet.expandRow(row);
   }
 
-  onDeselectRow(): Observable<any> {
-    return this.onDeselectRowSource.asObservable();
-  }
-
   edit(row: Row) {
     row.isInEditing = true;
   }
@@ -204,13 +199,8 @@ export class Grid {
     if (this.shouldProcessChange(changes)) {
        this.dataSet.setData(changes['elements'], this.getSelectedItems());
       if (this.getSetting('selectMode') !== 'multi') {
-        try {
-          const row = this.determineRowToSelect(changes);
-          this.onSelectRowSource.next(row);
-        }
-        catch (e) {
-          this.onDeselectRowSource.next(null);
-        }
+        const row = this.determineRowToSelect(changes);
+        this.onSelectRowSource.next(row);
       }
     }
   }
