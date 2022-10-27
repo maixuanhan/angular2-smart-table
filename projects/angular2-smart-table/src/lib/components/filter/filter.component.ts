@@ -12,15 +12,13 @@ import {Subscription} from 'rxjs';
                              [column]="column"
                              [source]="source"
                              [inputClass]="inputClass"
-                             (filter)="onFilter($event)">
-        </custom-table-filter>
+        ></custom-table-filter>
         <default-table-filter *ngSwitchDefault
                               [query]="query"
                               [column]="column"
                               [source]="source"
                               [inputClass]="inputClass"
-                              (filter)="onFilter($event)">
-        </default-table-filter>
+        ></default-table-filter>
       </div>
     `,
 })

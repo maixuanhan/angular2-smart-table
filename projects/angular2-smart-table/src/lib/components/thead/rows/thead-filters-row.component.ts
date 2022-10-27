@@ -17,8 +17,7 @@ import {CreateEvent} from '../../../lib/events';
       <angular2-smart-table-filter [source]="source"
                               [column]="column"
                               [inputClass]="filterInputClass"
-                              (filter)="filter.emit($event)">
-      </angular2-smart-table-filter>
+      ></angular2-smart-table-filter>
     </th>
     <th angular2-st-add-button *ngIf="showActionColumnRight"
                           [grid]="grid"
@@ -33,7 +32,6 @@ export class TheadFitlersRowComponent implements OnChanges {
   @Input() source!: DataSource;
 
   @Output() create = new EventEmitter<CreateEvent>();
-  @Output() filter = new EventEmitter<any>();
 
   isMultiSelectVisible!: boolean;
   showActionColumnLeft!: boolean;

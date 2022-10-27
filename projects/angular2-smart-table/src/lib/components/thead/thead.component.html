@@ -3,9 +3,8 @@
     [grid]="grid"
     [isAllSelected]="isAllSelected"
     [source]="source"
-    (sort)="sort.emit($event)"
     (hide)="hide.emit($event)"
-    (selectAllRows)="selectAllRows.emit($event)"
+    (selectAllRows)="selectAllRows.emit()"
 ></tr>
 
 <tr angular2-st-thead-filters-row *ngIf="!isHideSubHeader"
@@ -13,7 +12,6 @@
     [grid]="grid"
     [source]="source"
     (create)="create.emit($event)"
-    (filter)="filter.emit($event)"
 ></tr>
 
 <tr angular2-st-thead-form-row *ngIf="grid.createFormShown"

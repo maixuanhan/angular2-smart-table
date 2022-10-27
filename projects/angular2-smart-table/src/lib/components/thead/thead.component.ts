@@ -18,11 +18,9 @@ export class NgxSmartTableTheadComponent implements OnChanges {
   @Input() createConfirm!: EventEmitter<CreateConfirmEvent>;
   @Input() createCancel!: EventEmitter<CreateCancelEvent>;
 
-  @Output() sort = new EventEmitter<any>();
-  @Output() hide = new EventEmitter<any>();
-  @Output() selectAllRows = new EventEmitter<any>();
+  @Output() hide = new EventEmitter<string>();
+  @Output() selectAllRows = new EventEmitter<void>();
   @Output() create = new EventEmitter<CreateEvent>();
-  @Output() filter = new EventEmitter<any>();
 
   isHideHeader!: boolean;
   isHideSubHeader!: boolean;

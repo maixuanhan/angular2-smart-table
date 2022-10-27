@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {DataSource} from '../../lib/data-source/data-source';
@@ -66,8 +66,6 @@ export class PagerComponent implements OnChanges {
   @Input() perPageSelect!: number[];
   @Input() perPageSelectLabel!: string;
 
-  @Output() changePage = new EventEmitter<any>();
-
   currentPerPage!: any;
 
   protected pages!: Array<any>;
@@ -119,7 +117,6 @@ export class PagerComponent implements OnChanges {
   paginate(page: number): boolean {
     this.source.setPage(page);
     this.page = page;
-    this.changePage.emit({ page });
     return false;
   }
 

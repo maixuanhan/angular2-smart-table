@@ -13,7 +13,7 @@ import {Column} from "../../../lib/data-set/column";
         [grid]="grid"
         [source]="source"
         [isAllSelected]="isAllSelected"
-        (click)="selectAllRows.emit($event)"
+        (click)="selectAllRows.emit()"
     ></th>
     <th angular2-st-actions-title *ngIf="showActionColumnLeft" [grid]="grid"></th>
     <th *ngFor="let column of getVisibleColumns(grid.getColumns())"
@@ -25,7 +25,6 @@ import {Column} from "../../../lib/data-set/column";
         [source]="source"
         [column]="column"
         [isHideable]="isHideable"
-        (sort)="sort.emit($event)"
         (hide)="hide.emit($event)"
       ></angular2-st-column-title>
       <div *ngIf="isResizable" angular2-resizer class="angular2-resizer-block"></div>
@@ -39,9 +38,8 @@ export class TheadTitlesRowComponent implements OnChanges {
   @Input() isAllSelected!: boolean;
   @Input() source!: DataSource;
 
-  @Output() sort = new EventEmitter<any>();
   @Output() hide = new EventEmitter<any>();
-  @Output() selectAllRows = new EventEmitter<any>();
+  @Output() selectAllRows = new EventEmitter<void>();
 
   multiSelectWidth: string = '3rem';
   isMultiSelectVisible!: boolean;

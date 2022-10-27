@@ -26,7 +26,6 @@ export class TitleComponent implements OnChanges {
   @Input() column!: Column;
   @Input() source!: DataSource;
   @Input() isHideable!: boolean;
-  @Output() sort = new EventEmitter<any>();
   @Output() hide = new EventEmitter<any>();
 
   protected dataChangedSub!: Subscription;
@@ -60,7 +59,6 @@ export class TitleComponent implements OnChanges {
         compare: this.column.getCompareFunction(),
       },
     ]);
-    this.sort.emit(null);
   }
 
 

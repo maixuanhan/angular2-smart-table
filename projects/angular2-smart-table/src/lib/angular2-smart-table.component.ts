@@ -11,7 +11,8 @@ import {IColumn, Settings} from './lib/settings';
 import {
   CreateCancelEvent,
   CreateConfirmEvent,
-  CreateEvent, CustomActionEvent,
+  CreateEvent,
+  CustomActionEvent,
   DeleteConfirmEvent,
   DeleteEvent,
   EditCancelEvent,
@@ -28,7 +29,6 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
   @Input() source: any;
   @Input() settings: Settings = {};
-
 
   @Output() rowSelect = new EventEmitter<any>();
   @Output() rowDeselect = new EventEmitter<any>();
@@ -175,7 +175,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
     const row: Row = this.grid.getRows()[index];
     if (row) {
-      this.onSelectRow(row);
+      this.grid.selectRow(row);
+      this.emitSelectRow(row);
     } else {
       // we need to deselect all rows if we got an incorrect index
       this.deselectAllRows();
@@ -187,11 +188,12 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.emitDeselectRow(null);
   }
 
-  editRowSelect(row: Row) {
+  onEditRowSelect(row: Row) {
     if (this.grid.getSetting('selectMode') === 'multi') {
-      this.onMultipleSelectRow(row);
+      this.emitSelectRow(row);
     } else {
-      this.onSelectRow(row);
+      this.grid.selectRow(row);
+      this.emitSelectRow(row);
     }
   }
 
@@ -213,7 +215,7 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.emitSelectRow(row);
   }
 
-  async onSelectAllRows($event: any) {
+  async onSelectAllRows() {
     this.isAllSelected = !this.isAllSelected;
     await this.grid.selectAllRows(this.isAllSelected);
 
@@ -221,17 +223,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     this.emitSelectRow(null);
   }
 
-  onSelectRow(row: Row) {
-    this.grid.selectRow(row);
-    this.emitSelectRow(row);
-  }
-
   onExpandRow(row: Row) {
     this.grid.expandRow(row);
-  }
-
-  onMultipleSelectRow(row: Row) {
-    this.emitSelectRow(row);
   }
 
   initGrid() {
@@ -261,35 +254,18 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     return deepExtend({}, this.defaultSettings, this.settings);
   }
 
-  changePage($event: any) {
-    this.resetAllSelector();
-  }
-
-  sort($event: any) {
-    this.resetAllSelector();
-  }
-
-  filter($event: any) {
-    this.resetAllSelector();
-  }
-
   getNotVisibleColumns(): Array<IColumn> {
     return (this.grid?.getColumns() ?? []).filter((column: IColumn) => column.hide);
   }
 
-  toggleColumnVisibility(columnId: string) {
+  onShowHeader(columnId: string) {
     (this.settings as any).columns[columnId].hide = false;
-    //this.grid.setSettings(this.settings);
     this.grid.setSettings(this.prepareSettings());
   }
 
   onHideHeader(columnId: string) {
     (this.settings as any).columns[columnId].hide = true;
     this.grid.setSettings(this.prepareSettings());
-  }
-
-  private resetAllSelector() {
-    // this.isAllSelected = false;
   }
 
   private emitUserSelectRow(row: Row | null) {
