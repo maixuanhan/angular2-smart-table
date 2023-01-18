@@ -6,6 +6,7 @@ This document lists the changes introduced by this fork.
 
 * Declare compatibility with Angular 15
 * Fixes several incorrect links to the sources of the demo examples
+* Fixes wrong documentation about the available filter types
 
 ## Version 2.7.1
 
