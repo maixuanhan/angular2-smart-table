@@ -76,6 +76,7 @@ export class AdvancedExampleFiltersComponent {
         filter: {
           type: 'multiple',
           config: {
+            strict: true, // default is false and will work like a case-insensitive text search
             selectedItems: [],
             dropdownSettings: {
               singleSelection: false,

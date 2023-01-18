@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DefaultFilter} from './default-filter';
-import {HttpClient} from "@angular/common/http";
 import {DropdownSettings} from 'angular2-multiselect-dropdown/lib/multiselect.interface';
-import {defaultStringInclusionFilter} from '../../../lib/data-source/local/local.filter';
+import {defaultStringEqualsFilter, defaultStringInclusionFilter} from '../../../lib/data-source/local/local.filter';
 
 export interface Config {
     dropdownList: Array<any>,
@@ -28,13 +27,8 @@ export class MselectFilterComponent extends DefaultFilter implements OnInit {
     selectedItems: Array<any> = [];
     dropdownSettings: DropdownSettings = {};
 
-    constructor(private http: HttpClient) {
-        super()
-
-    }
-
     ngOnInit() {
-        this.column.filterFunction = this.onfilterValues.bind(this);
+        this.column.filterFunction = this.onFilterValues.bind(this);
         const config: Config = this.column.getFilterConfig();
         this.dropdownList = config.dropdownList || [];
         this.selectedItems = config.selectedItems || [];
@@ -52,12 +46,17 @@ export class MselectFilterComponent extends DefaultFilter implements OnInit {
         this.dropdownSettings = Object.assign(setting, config.dropdownSettings);
     }
 
-    onfilterValues(cellValue: string, search: string, data: any, cellName: string) {
+    onFilterValues(cellValue: string, search: string, data: any, cellName: string) {
         if (search.indexOf(this.selector) != -1) {
             let searchArray = search.split(this.selector);
             return searchArray.indexOf(cellValue) != -1;
         }
-        return defaultStringInclusionFilter(cellValue, search, data, cellName);
+        const strictFilter = this.column.getFilterConfig()?.strict ?? false;
+        if (strictFilter) {
+            return defaultStringEqualsFilter(cellValue, search, data, cellName);
+        } else {
+            return defaultStringInclusionFilter(cellValue, search, data, cellName);
+        }
     }
 
     onItemSelect(item: any) {

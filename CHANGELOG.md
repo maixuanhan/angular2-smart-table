@@ -5,6 +5,10 @@ This document lists the changes introduced by this fork.
 ## Version 2.8.0
 
 * Declare compatibility with Angular 15
+* Add new config parameter `strict` for dropdown filters.
+  When this is set to `true`, the dropdown will really work like a selection
+  instead of a set of predefined search queries. For backwards compatibility,
+  the default of this value is `false`.
 * Fixes several incorrect links to the sources of the demo examples
 * Fixes wrong documentation about the available filter types
 
