@@ -5,6 +5,7 @@ This document lists the changes introduced by this fork.
 ## Version 2.8.0
 
 * Declare compatibility with Angular 15
+* Fixes incorrect link to the demo source for the "expand row" example
 
 ## Version 2.7.1
 
