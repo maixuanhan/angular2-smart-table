@@ -2,6 +2,10 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 2.8.0
+
+* Declare compatibility with Angular 15
+
 ## Version 2.7.1
 
 * Fixes surprising exception when table is empty.
