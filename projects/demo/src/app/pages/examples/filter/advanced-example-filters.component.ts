@@ -57,6 +57,12 @@ export class AdvancedExampleFiltersComponent {
       email: 'Rey.Padberg@rosamond.biz',
       passed: 'Yes',
     },
+    {
+      id: 12,
+      name: 'Chelsey Dietrichdottir',
+      email: 'Lucio_Hettinger@annie.ca',
+      passed: 'No',
+    },
   ];
 
   settings = {
@@ -89,7 +95,6 @@ export class AdvancedExampleFiltersComponent {
       },
       email: {
         title: 'Email',
-        hide: true,
         filter: {
           type: 'completer',
           config: {
