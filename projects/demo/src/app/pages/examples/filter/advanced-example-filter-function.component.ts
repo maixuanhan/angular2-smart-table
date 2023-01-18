@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Cell, Row } from 'angular2-smart-table';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'advanced-example-filter-function',
@@ -99,22 +98,10 @@ export class AdvancedExampleFilterFunctionComponent {
         filterFunction: (cell: any, search: any, row: any, field: any, el: any) => {
           if (search.length > 0 && search[0] === '-') {
             const re = new RegExp(search.substring(1), 'gi');
-            if (cell.match(re)) {
-              return false;
-            } else {
-              return true;
-            }
+            return !cell.match(re);
           } else {
-
-
             const re = new RegExp(search, 'gi');
-
-
-            if (cell.match(re) || el.companyId?.toString().match(re)) {
-              return true;
-            } else {
-              return false;
-            }
+            return !!(cell.match(re) || el.companyId?.toString().match(re));
           }
         },
       },

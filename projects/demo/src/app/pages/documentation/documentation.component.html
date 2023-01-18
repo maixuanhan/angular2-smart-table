@@ -400,12 +400,13 @@
     </tr>
     <tr>
       <td>selectMode</td>
-      <td><span class="highlight">'single'</span>|<span class="highlight">'multi'</span></td>
+      <td><span class="highlight">'single'</span>|<span class="highlight">'multi'</span>|<span class="highlight">'multi_filtered'</span></td>
       <td>'single'</td>
       <td>
         Determines if more than one row can be selected.<br>
         <span class="highlight">'single'</span> - just highlight the single selected row<br>
-        <span class="highlight">'multi'</span> - show a column with checkboxes for a multi-selection<br>
+        <span class="highlight">'multi'</span> - show a column with checkboxes for a multi-selection and "select all" selects all items<br>
+        <span class="highlight">'multi_filtered'</span> - show a column with checkboxes for a multi-selection and "select all" selects only all items wrt. the active filter<br>
       </td>
     </tr>
     <tr>
@@ -1249,6 +1250,46 @@
       </td>
       <td>
         Set table page
+      </td>
+    </tr>
+    <tr>
+      <td>selectAllItems</td>
+      <td>
+        <ul>
+          <li>
+            checked: <span class="highlight">boolean</span> - true: select all, false: unselect all
+          </li>
+          <li>
+            onlyFiltered: <span class="highlight">boolean</span> - if set, only operate on the elements that match
+            the current filter
+          </li>
+        </ul>
+      </td>
+      <td>
+        Selects all (filtered) items
+      </td>
+    </tr>
+    <tr>
+      <td>isEveryElementSelected</td>
+      <td>
+        <ul>
+          <li>
+            onlyFiltered: <span class="highlight">boolean</span> - if set, only operate on the elements that match
+            the current filter
+          </li>
+        </ul>
+      </td>
+      <td>
+        Returns true if and only if every (filtered) item is currently selected.
+      </td>
+    </tr>
+    <tr>
+      <td>getSelectedItems</td>
+      <td>
+        none
+      </td>
+      <td>
+        Returns an array of the currently selected elements.
       </td>
     </tr>
     <tr>

@@ -7,14 +7,11 @@ import {Column} from "../../../lib/data-set/column";
 @Component({
   selector: '[angular2-st-thead-titles-row]',
   template: `
-    <th angular2-st-checkbox-select-all
-        *ngIf="isMultiSelectVisible"
+    <th *ngIf="isMultiSelectVisible"
         [style.width]="multiSelectWidth"
-        [grid]="grid"
-        [source]="source"
-        [isAllSelected]="isAllSelected"
-        (click)="selectAllRows.emit()"
-    ></th>
+    >
+      <input type="checkbox" [ngModel]="isAllSelected" (click)="selectAllRows.emit()">
+    </th>
     <th angular2-st-actions-title *ngIf="showActionColumnLeft" [grid]="grid"></th>
     <th *ngFor="let column of getVisibleColumns(grid.getColumns())"
         class="angular2-smart-th {{ column.id }}"

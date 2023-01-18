@@ -1,7 +1,7 @@
 import {defaultComparator} from './local.sorter';
 import {LocalFilter} from './local.filter';
 import {LocalPager} from './local.pager';
-import {DataSource, IDataSourceFilter, IFilterConfig, ISortConfig} from '../data-source';
+import {DataSource, IDataSourceFilter, IFilterConfig, IPagingConfig, ISortConfig} from '../data-source';
 import {deepExtend} from '../../helpers';
 
 export class LocalDataSource extends DataSource {
@@ -13,7 +13,7 @@ export class LocalDataSource extends DataSource {
     filters: [],
     andOperator: true,
   };
-  protected pagingConf: any = {};
+  protected pagingConf: IPagingConfig = {page: 1, perPage: 10};
 
   private selectedItems: Array<any> = [];
   constructor(data: Array<any> = []) {
@@ -79,7 +79,7 @@ export class LocalDataSource extends DataSource {
 
   getFilteredAndSorted(): Promise<any> {
     let data = this.data.slice(0);
-    this.prepareData(data);
+    this.prepareData(data); // this would return only the current page, but it sets filteredAndSorted array
     return Promise.resolve(this.filteredAndSorted);
   }
 
@@ -95,7 +95,7 @@ export class LocalDataSource extends DataSource {
         andOperator: true,
       };
       this.sortConf = [];
-      this.pagingConf['page'] = 1;
+      this.pagingConf.page = 1;
     } else {
       this.setFilter([], true, false);
       this.setSort([], false);
@@ -118,11 +118,26 @@ export class LocalDataSource extends DataSource {
     else this.selectedItems = this.selectedItems.filter((i) => i !== row);
   }
 
-  async selectAllItems(checked: boolean): Promise<void> {
+  // TODO: actually there is no need that this is an async function, but changing the signature would be a breaking change
+  async selectAllItems(checked: boolean, onlyFiltered: boolean = false): Promise<void> {
     if (checked) {
-      const allItems = await this.getAll();
-      this.selectedItems = allItems.slice(0);
+      const itemsToSelect = onlyFiltered ? this.filteredAndSorted : this.data;
+      this.selectedItems = itemsToSelect.slice(0);
     } else this.selectedItems = [];
+  }
+
+  isEveryElementSelected(onlyFiltered: boolean = false): boolean {
+    const itemsToCheck = onlyFiltered ? this.filteredAndSorted : this.data;
+    if (onlyFiltered) {
+      // TODO: this is an ugly and costly O(n²) check, but currently we have no other choice....
+      if (itemsToCheck.length !== this.selectedItems.length) return false;
+      for (const item of itemsToCheck) {
+        if (this.selectedItems.indexOf(itemsToCheck) < 0) return false;
+      }
+      return true;
+    } else {
+      return itemsToCheck.length === this.selectedItems.length;
+    }
   }
 
   getSelectedItems(): Array<any> {
@@ -177,7 +192,7 @@ export class LocalDataSource extends DataSource {
       };
     }
     this.filterConf.andOperator = andOperator;
-    this.pagingConf['page'] = 1;
+    this.pagingConf.page = 1;
 
     super.setFilter(conf, andOperator, doEmit);
     return this;
@@ -200,15 +215,15 @@ export class LocalDataSource extends DataSource {
   }
 
   setPaging(page: number, perPage: number, doEmit: boolean = true): LocalDataSource {
-    this.pagingConf['page'] = page;
-    this.pagingConf['perPage'] = perPage;
+    this.pagingConf.page = page;
+    this.pagingConf.perPage = perPage;
 
     super.setPaging(page, perPage, doEmit);
     return this;
   }
 
   setPage(page: number, doEmit: boolean = true): LocalDataSource {
-    this.pagingConf['page'] = page;
+    this.pagingConf.page = page;
     super.setPage(page, doEmit);
     return this;
   }
@@ -221,7 +236,7 @@ export class LocalDataSource extends DataSource {
     return this.filterConf;
   }
 
-  getPaging(): any {
+  getPaging(): IPagingConfig {
     return this.pagingConf;
   }
 
@@ -283,9 +298,6 @@ export class LocalDataSource extends DataSource {
   }
 
   protected paginate(data: Array<any>): Array<any> {
-    if (this.pagingConf && this.pagingConf['page'] && this.pagingConf['perPage']) {
-      data = LocalPager.paginate(data, this.pagingConf['page'], this.pagingConf['perPage']);
-    }
-    return data;
+    return LocalPager.paginate(data, this.pagingConf.page, this.pagingConf.perPage);
   }
 }

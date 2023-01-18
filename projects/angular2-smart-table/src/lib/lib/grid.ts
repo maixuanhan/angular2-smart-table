@@ -4,7 +4,7 @@ import {Deferred, getDeepFromObject, getPageForRowIndex} from './helpers';
 import {Column} from './data-set/column';
 import {Row} from './data-set/row';
 import {DataSet} from './data-set/data-set';
-import {DataSource} from './data-source/data-source';
+import {DataSource, DataSourceChangeEvent} from './data-source/data-source';
 import {EventEmitter} from '@angular/core';
 
 import {Settings} from "./settings";
@@ -51,7 +51,7 @@ export class Grid {
   }
 
   isMultiSelectVisible(): boolean {
-    return this.getSetting('selectMode') === 'multi';
+    return ['multi', 'multi_filtered'].indexOf(this.getSetting('selectMode')) > -1;
   }
 
   getNewRow(): Row {
@@ -72,8 +72,8 @@ export class Grid {
   }
 
   setSource(source: DataSource) {
-    this.source = this.prepareSource(source);
     this.detach();
+    this.source = this.prepareSource(source);
 
     this.sourceOnChangedSubscription = this.source.onChanged().subscribe((changes: any) => this.processDataChange(changes));
 
@@ -195,10 +195,10 @@ export class Grid {
     }
   }
 
-  processDataChange(changes: any) {
+  processDataChange(changes: DataSourceChangeEvent) {
     if (this.shouldProcessChange(changes)) {
-      this.dataSet.setData(changes['elements'], this.getSelectedItems());
-      if (this.getSetting('selectMode') !== 'multi') {
+      this.dataSet.setData(changes.elements, this.getSelectedItems());
+      if (this.getSetting('selectMode') === 'single') {
         if (this.dataSet.getRows().length > 0) {
           const row = this.determineRowToSelect(changes);
           this.onSelectRowSource.next(row);
@@ -209,10 +209,10 @@ export class Grid {
     }
   }
 
-  shouldProcessChange(changes: any): boolean {
-    if (['filter', 'sort', 'page', 'remove', 'refresh', 'load', 'empty', 'paging'].indexOf(changes['action']) !== -1) {
+  shouldProcessChange(changes: DataSourceChangeEvent): boolean {
+    if (['filter', 'sort', 'page', 'remove', 'refresh', 'load', 'empty', 'paging'].indexOf(changes.action) !== -1) {
       return true;
-    } else if (['prepend', 'append'].indexOf(changes['action']) !== -1 && !this.getSetting('pager.display')) {
+    } else if (['prepend', 'append'].indexOf(changes.action) !== -1 && !this.getSetting('pager.display')) {
       return true;
     }
 
@@ -225,9 +225,9 @@ export class Grid {
    *
    * TODO: move to selectable? Separate directive
    */
-  determineRowToSelect(changes: any): Row | null {
+  determineRowToSelect(changes: DataSourceChangeEvent): Row | null {
 
-    if (['load', 'page', 'filter', 'sort', 'refresh'].indexOf(changes['action']) !== -1) {
+    if (['load', 'page', 'filter', 'sort', 'refresh'].indexOf(changes.action) !== -1) {
       return this.dataSet.select(this.getRowIndexToSelect());
     }
 
@@ -235,25 +235,25 @@ export class Grid {
       return null;
     }
 
-    if (changes['action'] === 'remove') {
-      if (changes['elements'].length === 0) {
+    if (changes.action === 'remove') {
+      if (changes.elements.length === 0) {
         // we have to store which one to select as the data will be reloaded
         this.dataSet.willSelectLastRow();
       } else {
         return this.dataSet.selectPreviousRow();
       }
     }
-    if (changes['action'] === 'append') {
+    if (changes.action === 'append') {
       // we have to store which one to select as the data will be reloaded
       this.dataSet.willSelectLastRow();
     }
-    if (changes['action'] === 'add') {
+    if (changes.action === 'add') {
       return this.dataSet.selectFirstRow();
     }
-    if (changes['action'] === 'update') {
+    if (changes.action === 'update') {
       return this.dataSet.selectFirstRow();
     }
-    if (changes['action'] === 'prepend') {
+    if (changes.action === 'prepend') {
       // we have to store which one to select as the data will be reloaded
       this.dataSet.willSelectFirstRow();
     }
@@ -295,9 +295,11 @@ export class Grid {
   }
 
   async selectAllRows(status: boolean) {
-    this.dataSet.getRows()
-      .forEach(r => r.isSelected = status);
-    await this.source.selectAllItems(status);
+    // remember that the data set of the grid only contains the visible elements on the current page
+    this.dataSet.getRows().forEach(r => r.isSelected = status);
+
+    // advise the data source to also update the selected elements
+    await this.source.selectAllItems(status, this.getSetting('selectMode') === 'multi_filtered');
   }
 
   getFirstRow(): Row {

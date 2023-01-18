@@ -3,7 +3,7 @@ import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {DataSet} from './lib/data-set/data-set';
 import {Row} from './lib/data-set/row';
-import {DataSource} from './lib/data-source/data-source';
+import {DataSource, DataSourceChangeEvent} from './lib/data-source/data-source';
 import {LocalDataSource} from './lib/data-source/local/local.data-source';
 import {Grid} from './lib/grid';
 import {deepExtend, getPageForRowIndex} from './lib/helpers';
@@ -45,6 +45,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   @Output() rowHover: EventEmitter<any> = new EventEmitter<any>();
   @Output() afterGridInit: EventEmitter<DataSet> = new EventEmitter<DataSet>();
 
+  dataChangeSubscription?: Subscription;
+
   tableClass!: string;
   tableId!: string;
   perPageSelect: number[] = [];
@@ -57,7 +59,7 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   grid!: Grid;
   defaultSettings: Settings = {
     mode: 'inline', // inline|external
-    selectMode: 'single', // single|multi
+    selectMode: 'single', // single|multi|multi_filtered
     /**
      * Points to an element in all data
      *
@@ -182,14 +184,14 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   }
 
   onEditRowSelect(row: Row) {
-    if (this.grid.getSetting('selectMode') !== 'multi') {
+    if (this.grid.getSetting('selectMode') === 'single') {
       this.grid.selectRow(row);
       this.emitSelectRow(row);
     }
   }
 
   onUserSelectRow(row: Row) {
-    if (this.grid.getSetting('selectMode') !== 'multi') {
+    if (this.grid.getSetting('selectMode') === 'single') {
       this.grid.selectRow(row);
       this.emitUserSelectRow(row);
     }
@@ -201,6 +203,9 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
   onMultipleSelectRow(row: Row) {
     this.grid.multipleSelectRow(row);
+    // TODO: currently we make our life easy and just deselect the "select all" checkbox when needed
+    //       but we do not check it, when we determine that the user has selected everything
+    if (!row.isSelected) this.isAllSelected = false;
     this.emitUserSelectRow(row);
   }
 
@@ -227,13 +232,26 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   }
 
   prepareSource(): DataSource {
+    let source: DataSource;
     if (this.source instanceof DataSource) {
-      return this.source;
+      source = this.source;
     } else if (this.source instanceof Array) {
-      return new LocalDataSource(this.source);
+      source = new LocalDataSource(this.source);
+    } else {
+      source = new LocalDataSource();
     }
 
-    return new LocalDataSource();
+    // we have to hook up a listener to update some variables when the data source changes
+    if (this.dataChangeSubscription) this.dataChangeSubscription.unsubscribe();
+    this.dataChangeSubscription = source.onChanged().subscribe((changes: any) => this.processDataChange(changes));
+
+    return source;
+  }
+
+  processDataChange(changes: DataSourceChangeEvent): void {
+    // here we can already assume that the source has been lifted to an instance of DataSource
+    const source = this.source as DataSource;
+    this.isAllSelected = source.isEveryElementSelected(this.grid.getSetting('selectMode') === 'multi_filtered')
   }
 
   prepareSettings(): Settings {

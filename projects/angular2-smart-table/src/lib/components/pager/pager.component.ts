@@ -102,10 +102,10 @@ export class PagerComponent implements OnChanges {
    * @param changes
    */
   processPageChange(changes: any) {
-    if (changes['action'] === 'prepend') {
+    if (changes.action === 'prepend') {
       this.source.setPage(1);
     }
-    if (changes['action'] === 'append') {
+    if (changes.action === 'append') {
       this.source.setPage(this.getLast());
     }
   }
@@ -168,13 +168,8 @@ export class PagerComponent implements OnChanges {
 
   onChangePerPage(event: any) {
     if (this.currentPerPage) {
-
-      if (typeof this.currentPerPage === 'string' && this.currentPerPage.toLowerCase() === 'all') {
-        this.source.getPaging().perPage = null;
-      } else {
-        this.source.getPaging().perPage = this.currentPerPage * 1;
-        this.source.refresh();
-      }
+      this.source.getPaging().perPage = this.currentPerPage * 1;
+      this.source.refresh();
       this.initPages();
     }
   }

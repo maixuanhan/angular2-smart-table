@@ -26,7 +26,7 @@ export interface Settings {
   expand?: Expand;
   pager?: Pager;
   rowClassFunction?: Function;
-  selectMode?: 'single' | 'multi';
+  selectMode?: 'single' | 'multi' | 'multi_filtered';
   selectedRowIndex?: number;
   switchPageToSelectedRowPage?: boolean;
 }

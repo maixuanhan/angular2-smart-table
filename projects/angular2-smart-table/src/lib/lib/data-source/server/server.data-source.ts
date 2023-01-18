@@ -43,7 +43,10 @@ export class ServerDataSource extends LocalDataSource {
     return lastValueFrom(this.requestElements(filtered, sorted, paginated)
       .pipe(map(res => {
         this.lastRequestCount = this.extractTotalFromResponse(res);
+        // TODO: the following two lines are obviously incorrect
+        //       but whoever hacked this ServerDataSource into the project did not think about compatibility to the interface
         this.data = this.extractDataFromResponse(res);
+        this.filteredAndSorted = this.data;
         return this.data;
       })));
   }
@@ -117,12 +120,8 @@ export class ServerDataSource extends LocalDataSource {
   }
 
   protected addPagerRequestParams(httpParams: HttpParams): HttpParams {
-
-    if (this.pagingConf && this.pagingConf['page'] && this.pagingConf['perPage']) {
-      httpParams = httpParams.set(this.conf.pagerPageKey, this.pagingConf['page']);
-      httpParams = httpParams.set(this.conf.pagerLimitKey, this.pagingConf['perPage']);
-    }
-
+    httpParams = httpParams.set(this.conf.pagerPageKey, this.pagingConf.page);
+    httpParams = httpParams.set(this.conf.pagerLimitKey, this.pagingConf.perPage);
     return httpParams;
   }
 }

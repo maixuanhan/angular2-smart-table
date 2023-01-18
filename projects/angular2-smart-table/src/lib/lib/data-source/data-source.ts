@@ -18,9 +18,22 @@ export interface IDataSourceFilter {
   andOperator: boolean;
 }
 
+export interface IPagingConfig {
+  page: number;
+  perPage: number;
+}
+
+export interface DataSourceChangeEvent {
+  action: string,
+  elements: any, // TODO: this should be Array<any> but getElements() returns Promise<any> for some reason....
+  paging: IPagingConfig,
+  filter: IDataSourceFilter;
+  sort: ISortConfig[];
+}
+
 export abstract class DataSource {
 
-  protected onChangedSource = new Subject<any>();
+  protected onChangedSource = new Subject<DataSourceChangeEvent>();
   protected onAddedSource = new Subject<any>();
   protected onUpdatedSource = new Subject<any>();
   protected onRemovedSource = new Subject<any>();
@@ -30,15 +43,16 @@ export abstract class DataSource {
   abstract getFilteredAndSorted(): Promise<any>;
   abstract getSort(): Array<ISortConfig>;
   abstract getFilter(): IDataSourceFilter;
-  abstract getPaging(): any;
+  abstract getPaging(): IPagingConfig;
 
   /**
    * Returns the total number of elements with respect to the current filter.
    */
   abstract count(): number;
   abstract toggleItem(row: any, isSelected: boolean): void;
-  abstract selectAllItems(checked: boolean): Promise<void>;
+  abstract selectAllItems(checked: boolean, onlyFiltered: boolean): Promise<void>;
   abstract getSelectedItems(): Array<any>;
+  abstract isEveryElementSelected(onlyFiltered: boolean): boolean;
 
   refresh() {
     this.emitOnChanged('refresh');
