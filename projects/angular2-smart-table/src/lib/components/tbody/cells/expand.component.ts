@@ -8,7 +8,7 @@ import {SecurityTrustType} from '../../../pipes/bypass-security-trust.pipe';
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
       <a href="#" class="angular2-smart-action angular2-smart-action-expand-expand"
-          [innerHTML]="expandRowButtonContent | bypassSecurityTrust: bypassSecurityTrust" (click)="onExpand($event)"></a>
+         [innerHTML]="buttonContent | bypassSecurityTrust: bypassSecurityTrust" (click)="onExpand($event)"></a>
     `,
   })
   export class TbodyExpandRowComponent implements OnChanges {
@@ -18,7 +18,7 @@ import {SecurityTrustType} from '../../../pipes/bypass-security-trust.pipe';
 
     @Output() onExpandRow = new EventEmitter<any>();
 
-    expandRowButtonContent!: string;
+    buttonContent!: string;
     bypassSecurityTrust: SecurityTrustType = 'none';
 
     constructor(){
@@ -32,7 +32,7 @@ import {SecurityTrustType} from '../../../pipes/bypass-security-trust.pipe';
 
 
     ngOnChanges(){
-        this.expandRowButtonContent = this.grid.getSetting('expand.expandRowButtonContent');
+        this.buttonContent = this.grid.settings.expand?.buttonContent ?? this.grid.settings.expand?.expandRowButtonContent ?? 'Expand';
         this.bypassSecurityTrust = this.grid.settings.expand?.sanitizer?.bypassHtml ? 'html' : 'none';
     }
   }

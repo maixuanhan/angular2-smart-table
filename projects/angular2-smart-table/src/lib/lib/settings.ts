@@ -22,6 +22,9 @@ export interface Settings {
   add?: AddAction;
   delete?: DeleteAction;
   filter?: Filter;
+  /**
+   * @deprecated use `expand.component`
+   */
   expandedRowComponent?: any;
   expand?: Expand;
   pager?: Pager;
@@ -36,7 +39,24 @@ export interface Filter {
 }
 
 export interface Expand {
+  /**
+   * The content of the expand button.
+   * @deprecated use buttonContent property
+   */
   expandRowButtonContent?: string;
+  /**
+   * The angular component that shall be rendered when the row is expanded.
+   * The data of the row is assigned to a property rowData.
+   */
+  component?: any;
+  /**
+   * The content of the expand button.
+   * This can be HTML or even SVG - see the sanitizer property.
+   */
+  buttonContent?: string;
+  /**
+   * Configures the sanitizer to allow HTML or SVG content in the button.
+   */
   sanitizer?: SanitizerSettings;
 }
 
@@ -56,6 +76,10 @@ export type ColumnValuePrepareFunction = (cellValue: any, rowData: any, cell: Ce
 export type ColumnFilterFunction = (cellValue: any, searchString: string, allData: any, cellName: string, rowData: any) => boolean;
 
 export interface SanitizerSettings {
+  /**
+   * Set this to true to bypass the sanitizer for HTML content.
+   * Security note: do not use this, if the content can be controlled by the user!
+   */
   bypassHtml?: boolean;
 }
 

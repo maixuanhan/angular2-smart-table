@@ -50,12 +50,12 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
 
   @ViewChildren('expandedRowChild', { read: ViewContainerRef }) expandedRowChild!: QueryList<ViewContainerRef>;
 
-  customComponent: any;
+  expandedRowComponent: any;
   hasChildComponent: boolean = false;
 
   ngAfterViewInit(): void {
-    let cmp = this.grid.settings.expandedRowComponent;
-    if (cmp && !this.customComponent) {
+    let cmp = this.getExpandedRowComponentFromSettings();
+    if (cmp && !this.expandedRowComponent) {
       this.expandedRowChild.forEach(c => c.clear());
       this.hasChildComponent = true;
       this.createCustomComponent();
@@ -63,18 +63,22 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.customComponent) this.customComponent.destroy();
+    if (this.expandedRowComponent) this.expandedRowComponent.destroy();
+  }
+
+  private getExpandedRowComponentFromSettings(): any {
+    return this.grid.settings.expand?.component ?? this.grid.settings.expandedRowComponent;
   }
 
   protected createCustomComponent() {
-    let cmp = this.grid.settings.expandedRowComponent;
+    let cmp = this.getExpandedRowComponentFromSettings();
     if (cmp) {
       this.expandedRowChild.changes
         .pipe(delay(0))
         .subscribe((list: QueryList<ViewContainerRef>) => {
           if (list.length) {
-            this.customComponent = list.first.createComponent(cmp);
-            Object.assign(this.customComponent.instance, this.grid.dataSet.expandRow, {
+            this.expandedRowComponent = list.first.createComponent(cmp);
+            Object.assign(this.expandedRowComponent.instance, this.grid.dataSet.expandRow, {
               rowData: this.grid.dataSet.getExpandedRow().getData(),
             });
           }

@@ -101,7 +101,7 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
       confirmDelete: false,
     },
     expand: {
-      expandRowButtonContent: 'Expand'
+      buttonContent: 'Expand'
     },
     attr: {
       id: '',

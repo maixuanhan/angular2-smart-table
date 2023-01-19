@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {Settings} from "angular2-smart-table";
 
 @Component({
   selector: 'div-view',
@@ -46,9 +47,11 @@ export class DivViewComponent {
 })
 export class RowExpandComponent implements OnInit {
 
-  settings = {
+  settings: Settings = {
     resizable: true,
-    expandedRowComponent: DivViewComponent,
+    expand: {
+      component: DivViewComponent,
+    },
     columns: {
       id: {
         title: 'ID',
