@@ -332,7 +332,7 @@
         Function run against a value before it gets inserted into a cell.
         You can use it to modify how a value is displayed in the cell.
         <br>
-        This function will be invoked with 2 parameters: cell, row
+        This function will be invoked with 3 parameters: cellValue, rowData, cell
       </td>
     </tr>
     <tr>
@@ -379,7 +379,7 @@
       <td>
         Function run against the column value when filtering is happening
         <br>
-        This function will be invoked with 3 parameters: cell, search, row
+        This function will be invoked with 5 parameters: cellValue, search, allData, field, rowData
       </td>
     </tr>
     <tr class="section">

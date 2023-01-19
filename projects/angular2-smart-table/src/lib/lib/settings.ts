@@ -52,8 +52,8 @@ export enum IColumnType {
 
 export type ISortDirection = 'asc' | 'desc' | null; // null means: do not sort
 
-export type ColumnValuePrepareFunction = (cellValue: any, row: any, cell: Cell) => any;
-export type ColumnFilterFunction = (cellValue: any, searchString: string, rowData: any, cellName: string, row: any) => void;
+export type ColumnValuePrepareFunction = (cellValue: any, rowData: any, cell: Cell) => any;
+export type ColumnFilterFunction = (cellValue: any, searchString: string, allData: any, cellName: string, rowData: any) => boolean;
 
 export interface SanitizerSettings {
   bypassHtml?: boolean;

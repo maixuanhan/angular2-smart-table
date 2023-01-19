@@ -18,6 +18,7 @@ This document lists the changes introduced by this fork.
 * Fixes that types in data-source.ts were not part of public API
 * Fixes several incorrect links to the sources of the demo examples
 * Fixes wrong documentation about the available filter types
+* Fixes wrong documentation about `valuePrepareFunction` and `filterFunction`.
 
 ## Version 2.7.1
 
