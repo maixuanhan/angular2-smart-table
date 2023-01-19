@@ -14,6 +14,7 @@ This document lists the changes introduced by this fork.
   the elements that match the current filter instead of all elements in the data source
 * Add some DataSource methods regarding "select all" to the documentation
 * Remove undocumented 'all' option for `perPage` because that is incompatible with `number`
+* Fixes that only one sorting parameter is included in a ServerDataSource query
 * Fixes that types in data-source.ts were not part of public API
 * Fixes several incorrect links to the sources of the demo examples
 * Fixes wrong documentation about the available filter types
