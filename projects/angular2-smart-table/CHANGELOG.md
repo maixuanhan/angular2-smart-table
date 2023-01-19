@@ -2,6 +2,27 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 2.8.0
+
+* Declare compatibility with Angular 15
+* Add new config parameter `strict` for dropdown filters.
+  When this is set to `true`, the dropdown will really work like a selection
+  instead of a set of predefined search queries. For backwards compatibility,
+  the default of this value is `false`.
+* Add proper typing for DataSourceChangeEvent
+* Add new selection mode `multi_filtered` where the "select all" checkbox selects only
+  the elements that match the current filter instead of all elements in the data source
+* Add some DataSource methods regarding "select all" to the documentation
+* Add settings for conditionally hiding or disabling action buttons
+* Remove undocumented 'all' option for `perPage` because that is incompatible with `number`
+* Deprecates `expandedRowComponent` and `expand.expandRowButtonContent`
+  and adds `expand.component` and `expand.buttonContent` as alternatives
+* Fixes that only one sorting parameter is included in a ServerDataSource query
+* Fixes that types in data-source.ts were not part of public API
+* Fixes several incorrect links to the sources of the demo examples
+* Fixes wrong documentation about the available filter types
+* Fixes wrong documentation about `valuePrepareFunction` and `filterFunction`.
+
 ## Version 2.7.1
 
 * Fixes surprising exception when table is empty.
