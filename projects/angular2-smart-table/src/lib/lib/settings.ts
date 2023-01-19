@@ -1,4 +1,5 @@
 import {Cell} from "./data-set/cell";
+import {Row} from "./data-set/row";
 
 /**
  * @deprecated just use 'single' or 'multi'
@@ -54,6 +55,8 @@ export interface Expand {
    * This can be HTML or even SVG - see the sanitizer property.
    */
   buttonContent?: string;
+  hiddenWhen?: (row: Row) => boolean;
+  disabledWhen?: (row: Row) => boolean;
   /**
    * Configures the sanitizer to allow HTML or SVG content in the button.
    */
@@ -125,7 +128,9 @@ export interface Actions {
 
 export interface AddAction {
   inputClass?: string;
-  sanitizer?: SanitizerSettings,
+  sanitizer?: SanitizerSettings;
+  hiddenWhen?: () => boolean;
+  disabledWhen?: () => boolean;
   addButtonContent?: string;
   createButtonContent?: string;
   cancelButtonContent?: string;
@@ -134,7 +139,9 @@ export interface AddAction {
 
 export interface EditAction {
   inputClass?: string;
-  sanitizer?: SanitizerSettings,
+  sanitizer?: SanitizerSettings;
+  hiddenWhen?: (row: Row) => boolean;
+  disabledWhen?: (row: Row) => boolean;
   editButtonContent?: string;
   saveButtonContent?: string;
   cancelButtonContent?: string;
@@ -142,7 +149,9 @@ export interface EditAction {
 }
 
 export interface DeleteAction {
-  sanitizer?: SanitizerSettings,
+  sanitizer?: SanitizerSettings;
+  hiddenWhen?: (row: Row) => boolean;
+  disabledWhen?: (row: Row) => boolean;
   deleteButtonContent?: string;
   confirmDelete?: boolean;
 }

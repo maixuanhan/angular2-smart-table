@@ -13,6 +13,7 @@ This document lists the changes introduced by this fork.
 * Add new selection mode `multi_filtered` where the "select all" checkbox selects only
   the elements that match the current filter instead of all elements in the data source
 * Add some DataSource methods regarding "select all" to the documentation
+* Add settings for conditionally hiding or disabling action buttons
 * Remove undocumented 'all' option for `perPage` because that is incompatible with `number`
 * Deprecates `expandedRowComponent` and `expand.expandRowButtonContent`
   and adds `expand.component` and `expand.buttonContent` as alternatives

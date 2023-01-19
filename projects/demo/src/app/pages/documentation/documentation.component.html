@@ -197,6 +197,25 @@
       </td>
     </tr>
     <tr>
+      <td>expand.hiddenWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be rendered.
+      </td>
+    </tr>
+    <tr>
+      <td>expand.disabledWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be clickable and receive the CSS class "not-allowed"
+        which by default applies the <span class="highlight">cursor: not-allowed</span> style.
+      </td>
+    </tr>
+    <tr>
       <td>expand.sanitizer.bypassHtml</td>
       <td><span class="highlight">boolean</span></td>
       <td>false</td>
@@ -632,6 +651,25 @@
       </td>
     </tr>
     <tr>
+      <td>edit.hiddenWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be rendered.
+      </td>
+    </tr>
+    <tr>
+      <td>edit.disabledWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be clickable and receive the CSS class "not-allowed"
+        which by default applies the <span class="highlight">cursor: not-allowed</span> style.
+      </td>
+    </tr>
+    <tr>
       <td>add</td>
       <td><span class="highlight">Object</span></td>
       <td>see below</td>
@@ -689,6 +727,25 @@
       </td>
     </tr>
     <tr>
+      <td>add.hiddenWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes no arguments and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be rendered.
+      </td>
+    </tr>
+    <tr>
+      <td>add.disabledWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes no arguments produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be clickable and receive the CSS class "not-allowed"
+        which by default applies the <span class="highlight">cursor: not-allowed</span> style.
+      </td>
+    </tr>
+    <tr>
       <td>delete</td>
       <td><span class="highlight">Object</span></td>
       <td>see below</td>
@@ -719,6 +776,25 @@
       <td>false</td>
       <td>
         Enable/disable <span class="highlight">(confirmDelete)</span> event. If enabled data will be deleted only if confirm.resolve() called.
+      </td>
+    </tr>
+    <tr>
+      <td>delete.hiddenWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be rendered.
+      </td>
+    </tr>
+    <tr>
+      <td>delete.disabledWhen</td>
+      <td><span class="highlight">Function</span></td>
+      <td>undefined</td>
+      <td>
+        Takes a <span class="highlight">Row</span> object as input and produces a <span class="highlight">boolean</span>.<br>
+        When true, the button will not be clickable and receive the CSS class "not-allowed"
+        which by default applies the <span class="highlight">cursor: not-allowed</span> style.
       </td>
     </tr>
     <tr>

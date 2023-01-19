@@ -7,7 +7,8 @@ import {SecurityTrustType} from '../../../pipes/bypass-security-trust.pipe';
     selector: 'angular2-st-tbody-expand',
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-      <a href="#" class="angular2-smart-action angular2-smart-action-expand-expand"
+      <a *ngIf="visible" href="#" class="angular2-smart-action angular2-smart-action-expand-expand"
+         [ngClass]="{'not-allowed': disabled}"
          [innerHTML]="buttonContent | bypassSecurityTrust: bypassSecurityTrust" (click)="onExpand($event)"></a>
     `,
   })
@@ -21,18 +22,34 @@ import {SecurityTrustType} from '../../../pipes/bypass-security-trust.pipe';
     buttonContent!: string;
     bypassSecurityTrust: SecurityTrustType = 'none';
 
+    hiddenWhenFunction: (row: Row) => boolean = (_) => false;
+    disabledWhenFunction: (row: Row) => boolean = (_) => false;
+
     constructor(){
+    }
+
+    get visible(): boolean {
+      return !this.hiddenWhenFunction(this.row);
+    }
+
+    get disabled(): boolean {
+      return this.disabledWhenFunction(this.row);
     }
 
     onExpand(event: any) {
         event.preventDefault();
         event.stopPropagation();
-        this.onExpandRow.emit(this.row);
+        if (!this.disabled) {
+          this.onExpandRow.emit(this.row);
+        }
     }
 
 
-    ngOnChanges(){
+    ngOnChanges() {
         this.buttonContent = this.grid.settings.expand?.buttonContent ?? this.grid.settings.expand?.expandRowButtonContent ?? 'Expand';
         this.bypassSecurityTrust = this.grid.settings.expand?.sanitizer?.bypassHtml ? 'html' : 'none';
+
+        this.hiddenWhenFunction = this.grid.settings.expand?.hiddenWhen ?? this.hiddenWhenFunction;
+        this.disabledWhenFunction = this.grid.settings.expand?.disabledWhen ?? this.disabledWhenFunction;
     }
   }
