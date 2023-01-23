@@ -265,9 +265,7 @@ export class Grid {
     if (initialSource && initialSource['field'] && initialSource['direction']) {
       source.setSort([initialSource], false);
     }
-    if (this.getSetting('pager.display') === true) {
-      source.setPaging(this.getPageToSelect(source), this.getSetting('pager.perPage'), false);
-    }
+    source.setPaging(this.getPageToSelect(source), this.getSetting('pager.perPage'), false);
 
     source.refresh();
     return source;

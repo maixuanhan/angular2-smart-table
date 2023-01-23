@@ -2,6 +2,14 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 2.8.1
+
+* Fixes a regression where `pager.display=false` resulted in showing only 10
+  items per page (the default) instead of what was configured in `pager.perPage`.
+  Please note that by a previous bug, the `pager.perPage` setting was entirely
+  ignored in this situation. I.e. after applying this bugfix, you might need to
+  set a proper value for `pager.perPage` in your application.
+
 ## Version 2.8.0
 
 * Declare compatibility with Angular 15
