@@ -54,11 +54,11 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   hasChildComponent: boolean = false;
 
   ngAfterViewInit(): void {
-    let cmp = this.getExpandedRowComponentFromSettings();
-    if (cmp && !this.expandedRowComponent) {
+    let cmp = this.grid.getExpandedRowComponentClass();
+    if (cmp !== undefined && !this.expandedRowComponent) {
       this.expandedRowChild.forEach(c => c.clear());
       this.hasChildComponent = true;
-      this.createCustomComponent();
+      this.createExpandedRowComponent();
     }
   }
 
@@ -66,13 +66,9 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
     if (this.expandedRowComponent) this.expandedRowComponent.destroy();
   }
 
-  private getExpandedRowComponentFromSettings(): any {
-    return this.grid.settings.expand?.component ?? this.grid.settings.expandedRowComponent;
-  }
-
-  protected createCustomComponent() {
-    let cmp = this.getExpandedRowComponentFromSettings();
-    if (cmp) {
+  private createExpandedRowComponent() {
+    const cmp = this.grid.getExpandedRowComponentClass();
+    if (cmp !== undefined) {
       this.expandedRowChild.changes
         .pipe(delay(0))
         .subscribe((list: QueryList<ViewContainerRef>) => {
@@ -91,13 +87,10 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   showActionColumnRight!: boolean;
   mode!: string;
   editInputClass!: string;
-  isActionAdd!: boolean;
-  isActionEdit!: boolean;
-  isActionDelete!: boolean;
   noDataMessage!: boolean;
 
   get tableColumnsCount() {
-    const actionColumn = this.isActionAdd || this.isActionEdit || this.isActionDelete ? 1 : 0;
+    const actionColumn = (this.showActionColumnLeft || this.showActionColumnRight) ? 1 : 0;
     const selectColumn = this.isMultiSelectVisible ? 1 : 0;
     return this.grid.getColumns().length + actionColumn + selectColumn;
   }
@@ -108,17 +101,10 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
     this.mode = this.grid.getSetting('mode');
     this.editInputClass = this.grid.getSetting('edit.inputClass');
     this.showActionColumnRight = this.grid.showActionColumn('right');
-    this.isActionAdd = this.grid.getSetting('actions.add');
-    this.isActionEdit = this.grid.getSetting('actions.edit');
-    this.isActionDelete = this.grid.getSetting('actions.delete');
     this.noDataMessage = this.grid.getSetting('noDataMessage');
   }
 
   getVisibleCells(cells: Array<Cell>): Array<Cell> {
     return (cells || []).filter((cell: Cell) => !cell.getColumn().hide);
-  }
-
-  onExpandRowClick(row: Row) {
-    this.onExpandRow.emit(row);
   }
 }

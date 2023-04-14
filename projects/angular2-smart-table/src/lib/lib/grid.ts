@@ -5,7 +5,7 @@ import {Column} from './data-set/column';
 import {Row} from './data-set/row';
 import {DataSet} from './data-set/data-set';
 import {DataSource, DataSourceChangeEvent} from './data-source/data-source';
-import {EventEmitter} from '@angular/core';
+import {EventEmitter, Type} from '@angular/core';
 
 import {Settings} from "./settings";
 import {CreateConfirmEvent, DeleteConfirmEvent, EditConfirmEvent} from './events';
@@ -47,11 +47,20 @@ export class Grid {
   }
 
   isActionsVisible(): boolean {
-    return this.getSetting('actions.add') || this.getSetting('actions.edit') || this.getSetting('actions.delete') || this.getSetting('actions.custom').length;
+    if (this.settings.actions === false || this.settings.actions === undefined) {
+      return false;
+    }
+    return this.settings.actions.add || this.settings.actions.edit || this.settings.actions.delete ||
+      (this.settings.actions.custom?.length ?? 0) > 0 ||
+      this.getExpandedRowComponentClass() !== undefined;
   }
 
   isMultiSelectVisible(): boolean {
     return ['multi', 'multi_filtered'].indexOf(this.getSetting('selectMode')) > -1;
+  }
+
+  getExpandedRowComponentClass(): Type<any> | undefined {
+    return this.settings.expand?.component ?? this.settings.expandedRowComponent;
   }
 
   getNewRow(): Row {
