@@ -126,8 +126,11 @@ export class LocalDataSource extends DataSource {
     } else this.selectedItems = [];
   }
 
-  isEveryElementSelected(onlyFiltered: boolean = false): boolean {
+  isEveryElementSelected(onlyFiltered: boolean = false, reportEmptyAsFalse: boolean = false): boolean {
     const itemsToCheck = onlyFiltered ? this.filteredAndSorted : this.data;
+    if (itemsToCheck.length === 0) {
+      return !reportEmptyAsFalse;
+    }
     if (onlyFiltered) {
       // TODO: this is an ugly and costly O(n²) check, but currently we have no other choice....
       if (itemsToCheck.length !== this.selectedItems.length) return false;

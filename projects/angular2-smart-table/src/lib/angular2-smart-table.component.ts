@@ -248,10 +248,13 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     return source;
   }
 
-  processDataChange(changes: DataSourceChangeEvent): void {
+  processDataChange(_: DataSourceChangeEvent): void {
     // here we can already assume that the source has been lifted to an instance of DataSource
     const source = this.source as DataSource;
-    this.isAllSelected = source.isEveryElementSelected(this.grid.getSetting('selectMode') === 'multi_filtered')
+    this.isAllSelected = source.isEveryElementSelected(
+      this.grid.getSetting('selectMode') === 'multi_filtered',
+      true,
+    );
   }
 
   prepareSettings(): Settings {

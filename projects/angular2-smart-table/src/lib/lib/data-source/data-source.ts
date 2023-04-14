@@ -50,9 +50,25 @@ export abstract class DataSource {
    */
   abstract count(): number;
   abstract toggleItem(row: any, isSelected: boolean): void;
+
+  /**
+   * Sets the selection state of all (filtered) elements.
+   * @param checked the new selection state
+   * @param onlyFiltered only consider elements matching the current filter
+   */
   abstract selectAllItems(checked: boolean, onlyFiltered: boolean): Promise<void>;
   abstract getSelectedItems(): Array<any>;
-  abstract isEveryElementSelected(onlyFiltered: boolean): boolean;
+
+  /**
+   * Indicates whether every (filtered) element is selected.
+   *
+   * @param onlyFiltered only consider elements matching the current filter
+   * @param reportEmptyAsFalse by logic, in an empty set "all" elements are selected.
+   * But if you want this to be reported as `false`, you can set this parameter to `true`.
+   * @return true if all (filtered) elements are selected, false otherwise
+   * @see selectAllItems
+   */
+  abstract isEveryElementSelected(onlyFiltered: boolean, reportEmptyAsFalse: boolean): boolean;
 
   refresh() {
     this.emitOnChanged('refresh');
