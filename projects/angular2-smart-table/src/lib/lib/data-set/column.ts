@@ -18,6 +18,16 @@ export class Column implements IColumn {
   classHeader?: string = '';
   classContent?: string = '';
   width?: string = '';
+  /**
+   * If this column was resized, this contains the new width in pixels.
+   * Please be aware that this only contains the width specified in the width
+   * CSS attribute. It does NOT necessarily equal the actual width of the column
+   * unless the table-layout is fixed.
+   * Also note carefully that in automatic table layouts the actual width of other columns,
+   * that are not adjacent to the resized column, may also change. Those changes are not
+   * reflected by this property.
+   */
+  resizedWidth?: number = undefined;
   isSortable?: boolean = true;
   isEditable?: boolean = true;
   isAddable?: boolean = true;

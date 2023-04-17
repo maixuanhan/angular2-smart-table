@@ -1,12 +1,12 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
-import { DefaultFilter } from 'angular2-smart-table';
+import {DefaultFilter} from 'angular2-smart-table';
 
 @Component({
   template: `
-    <input 
+    <input
       #number
       [ngClass]="inputClass"
       [formControl]="inputControl"

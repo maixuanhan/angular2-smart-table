@@ -1,21 +1,24 @@
-import {Directive, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 
 import {TableService} from '../services/table.service';
+import {Column} from "../lib/data-set/column";
 
 @Directive({
-  selector: '[angular2-resizer]'
+  selector: '[angular2SmartTableResizer]'
 })
 export class NgxResizerDirective implements OnInit, OnDestroy {
+  @Input() angular2SmartTableResizer!: {column: Column, siblingColumn: Column | undefined};
+
   isClicked!: boolean;
 
   parentElement: any;
   siblingElement: any;
 
-  pointerOffset!: number;
-  parentOffset!: number;
-  siblingOffset!: number;
+  pointerOffset: number = 0;
+  parentOffset: number = 0;
+  siblingOffset: number | undefined = undefined;
 
   destroyed$ = new Subject<any>();
 
@@ -31,8 +34,15 @@ export class NgxResizerDirective implements OnInit, OnDestroy {
       .subscribe((event: MouseEvent) => {
         const offset = this.pointerOffset - event.pageX;
         const width = this.parentOffset - offset;
+        this.angular2SmartTableResizer.column.resizedWidth = width;
         this.renderer.setStyle(this.parentElement, 'width', width + 'px');
-        this.renderer.setStyle(this.siblingElement, 'width', this.siblingOffset + offset + 'px');
+
+        const siblingColumn = this.angular2SmartTableResizer.siblingColumn;
+        if (siblingColumn !== undefined && this.siblingOffset !== undefined) {
+          const siblingWidth = this.siblingOffset + offset;
+          siblingColumn.resizedWidth = siblingWidth;
+          this.renderer.setStyle(this.siblingElement, 'width', siblingWidth + 'px');
+        }
       });
   }
 
@@ -43,7 +53,7 @@ export class NgxResizerDirective implements OnInit, OnDestroy {
     this.pointerOffset = event.pageX;
 
     this.parentOffset = this.parentElement.offsetWidth;
-    this.siblingOffset = this.siblingElement.offsetWidth;
+    this.siblingOffset = this.siblingElement?.offsetWidth;
   }
 
   @HostListener('document:mouseup') onMouseDown() {

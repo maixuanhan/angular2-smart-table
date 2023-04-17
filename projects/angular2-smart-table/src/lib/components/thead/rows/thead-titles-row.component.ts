@@ -13,7 +13,7 @@ import {Column} from "../../../lib/data-set/column";
       <input type="checkbox" [ngModel]="isAllSelected" (click)="selectAllRows.emit()">
     </th>
     <th angular2-st-actions-title *ngIf="showActionColumnLeft" [grid]="grid"></th>
-    <th *ngFor="let column of getVisibleColumns(grid.getColumns())"
+    <th *ngFor="let column of visibleColumns; index as i; last as isLast"
         class="angular2-smart-th {{ column.id }}"
         [ngClass]="column.classHeader ?? ''"
         [style.width]="column.width"
@@ -24,7 +24,10 @@ import {Column} from "../../../lib/data-set/column";
         [isHideable]="isHideable"
         (hide)="hide.emit($event)"
       ></angular2-st-column-title>
-      <div *ngIf="isResizable" angular2-resizer class="angular2-resizer-block"></div>
+      <div *ngIf="isResizable && (showActionColumnRight || !isLast)"
+           [angular2SmartTableResizer]="{column: column, siblingColumn: isLast ? undefined : visibleColumns[i+1]}"
+           class="angular2-resizer-block"
+      ></div>
     </th>
     <th angular2-st-actions-title *ngIf="showActionColumnRight" [grid]="grid"></th>
   `,
@@ -54,7 +57,7 @@ export class TheadTitlesRowComponent implements OnChanges {
     this.isHideable = this.grid.getSetting('hideable');
   }
 
-  getVisibleColumns(columns: Array<Column>): Array<Column> {
-    return (columns || []).filter((column: Column) => !column.hide);
+  get visibleColumns(): Array<Column> {
+    return (this.grid.getColumns() || []).filter((column: Column) => !column.hide);
   }
 }
