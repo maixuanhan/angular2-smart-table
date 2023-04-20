@@ -2,6 +2,13 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 2.9.0
+
+* Add `resizedWidth` property to `Column` which will contain the new declared width of a resized column
+* Remove the resizer control from the last column of a table
+* Fix the missing action column when the "expand" action was the only enabled action
+* Fix the "select all" checkbox being automatically checked when the table contains no data
+
 ## Version 2.8.1
 
 * Fixes a regression where `pager.display=false` resulted in showing only 10
