@@ -73,11 +73,9 @@
 
   <h3>Fixed Bugs</h3>
   <p>
-    The documentation of the method <code>DataSource.count()</code> says to return the number of elements
-    in the data source. But the <code>LocalDataSource</code> returned the number of filtered elements.
-    The <code>ServerDataSource</code> on the other hand did not do that.
-    For compatibility we fixed this bug by introducing an argument for <code>count()</code> with which you can
-    decide whether you want the total count or the filtered count.
+    The documentation of the method <code>DataSource.count()</code> claimed to return the number of elements
+    in the data source. But actually it only returns the number of filtered elements.
+    For compatibility we only fixed the documentation.
   </p>
   <p>
     <span class="highlight">ServerDataSource</span> - The behavior of the methods <code>getFilteredAndSorted()</code>
