@@ -865,9 +865,19 @@
       <th>Description</th>
     </tr>
     <tr>
+      <td>(afterGridInit)</td>
+      <td>
+        event: <span class="highlight">DataSet</span>
+      </td>
+      <td>
+        Fired once after the table grid is fully initialized.
+        The argument describes the data <em>set</em> the grid has created from the data <em>source</em> after applying the table settings.
+      </td>
+    </tr>
+    <tr>
       <td>(rowSelect)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">RowSelectionEvent</span>, consist of:
         <ul>
           <li>row: <span class="highlight">Object | null</span> - the row or null when all rows are meant</li>
           <li>data: <span class="highlight">Object | null</span> - selected row data object</li>
@@ -884,7 +894,7 @@
     <tr>
       <td>(userRowSelect)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">RowSelectionEvent</span>, consist of:
         <ul>
           <li>row: <span class="highlight">Object | null</span> - the row or null when all rows are meant</li>
           <li>data: <span class="highlight">Object | null</span> - selected row data object</li>
@@ -899,13 +909,9 @@
       </td>
     </tr>
     <tr>
-      <td>(mouseover)</td>
+      <td>(rowHover)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
-        <ul>
-          <li>data: <span class="highlight">Object</span> - highlighted row data object</li>
-          <li>source: <span class="highlight">DataSource</span> - table data source</li>
-        </ul>
+        event: <span class="highlight">Row</span>
       </td>
       <td>
         Triggered <strong>only</strong> on a user mouseover event.
@@ -914,7 +920,7 @@
     <tr>
       <td>(create)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">CreateEvent</span>, consist of:
         <ul>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
         </ul>
@@ -926,7 +932,7 @@
     <tr>
       <td>(createConfirm)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">CreateConfirmEvent</span>, consist of:
         <ul>
           <li>newData: <span class="highlight">Object</span> - data entered in a new row</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
@@ -941,7 +947,7 @@
     <tr>
       <td>(createCancel)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">CreateCancelEvent</span>, consist of:
         <ul>
           <li>discardedData: <span class="highlight">Object</span> - entered data that is discarded by the cancel</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
@@ -954,8 +960,9 @@
     <tr>
       <td>(edit)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">EditEvent</span>, consist of:
         <ul>
+          <li>row: <span class="highlight">Row</span> - the row the edit operates on</li>
           <li>data: <span class="highlight">Object</span> - row data object</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
         </ul>
@@ -967,8 +974,9 @@
     <tr>
       <td>(editConfirm)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">EditConfirmEvent</span>, consist of:
         <ul>
+          <li>row: <span class="highlight">Row</span> - the row the edit operates on</li>
           <li>data: <span class="highlight">Object</span> - original row data</li>
           <li>newData: <span class="highlight">Object</span> - edited data</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
@@ -983,8 +991,9 @@
     <tr>
       <td>(editCancel)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">EditCancelEvent</span>, consist of:
         <ul>
+          <li>row: <span class="highlight">Row</span> - the row the edit operates on</li>
           <li>data: <span class="highlight">Object</span> - original row data</li>
           <li>discardedData: <span class="highlight">Object</span> - edited data that is discarded by the cancel</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
@@ -997,8 +1006,9 @@
     <tr>
       <td>(delete)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">DeleteEvent</span>, consist of:
         <ul>
+          <li>row: <span class="highlight">Row</span> - the row that is supposed to be deleted</li>
           <li>data: <span class="highlight">Object</span> - row data object</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
         </ul>
@@ -1010,8 +1020,9 @@
     <tr>
       <td>(deleteConfirm)</td>
       <td>
-        event: <span class="highlight">Object</span>, consist of:
+        event: <span class="highlight">DeleteConfirmEvent</span>, consist of:
         <ul>
+          <li>row: <span class="highlight">Row</span> - the row that is supposed to be deleted</li>
           <li>data: <span class="highlight">Object</span> - data object to delete</li>
           <li>source: <span class="highlight">DataSource</span> - table data source</li>
           <li>confirm: <span class="highlight">Deferred</span> - Deferred object with resolve() and reject() methods.</li>
@@ -1020,6 +1031,21 @@
       <td>
         Triggered once a Delete button clicked. Triggered only if table <strong>confirmDelete = true and mode = inline</strong>.
         Allows you to confirm changes before they are applied to the table data source.
+      </td>
+    </tr>
+    <tr>
+      <td>(custom)</td>
+      <td>
+        event: <span class="highlight">CustomActionEvent</span>, consist of:
+        <ul>
+          <li>action: <span class="highlight">string</span> - the name of the registered custom action</li>
+          <li>row: <span class="highlight">Row</span> - the row the custom action operates on</li>
+          <li>data: <span class="highlight">Object</span> - the row data</li>
+          <li>source: <span class="highlight">DataSource</span> - table data source</li>
+        </ul>
+      </td>
+      <td>
+        Triggered once a custom action button clicked. There may be multiple custom actions that are distinguished by name.
       </td>
     </tr>
   </table>

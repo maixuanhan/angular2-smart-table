@@ -8,6 +8,7 @@ This document lists the changes introduced by this fork.
 * Remove the resizer control from the last column of a table
 * Fix the missing action column when the "expand" action was the only enabled action
 * Fix the "select all" checkbox being automatically checked when the table contains no data
+* Fix the outdated documentation for the emitted events
 
 ## Version 2.8.1
 

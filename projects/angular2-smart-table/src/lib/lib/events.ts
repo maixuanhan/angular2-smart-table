@@ -59,6 +59,10 @@ export interface EditConfirmEvent extends EditEvent {
 
 export interface EditCancelEvent {
   /**
+   * The row the edit operates on.
+   */
+  row: Row;
+  /**
    * The row data (shortcut for row.getData()).
    */
   data: any;

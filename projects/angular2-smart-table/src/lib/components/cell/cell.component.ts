@@ -50,6 +50,7 @@ export class CellComponent {
     } else {
       this.row.isInEditing = false;
       this.editCancel.emit({
+        row: this.row,
         data: this.row.getData(),
         discardedData: this.row.getNewData(),
         source: this.grid.source,
