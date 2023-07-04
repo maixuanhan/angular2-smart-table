@@ -11,8 +11,7 @@ export class FilterDefault {
   @Input() column!: Column;
   @Input() source!: DataSource;
   @Input() inputClass: string = '';
-
-  query: string = '';
+  @Input() query: string = '';
 
   onFilter(query: string) {
     this.source.addFilter({

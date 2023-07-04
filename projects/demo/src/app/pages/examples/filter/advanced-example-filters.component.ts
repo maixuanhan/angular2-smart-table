@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'advanced-example-filters',
@@ -73,39 +73,9 @@ export class AdvancedExampleFiltersComponent {
       },
       name: {
         title: 'Full Name',
-        filter: {
-          type: 'multiple',
-          config: {
-            strict: true, // default is false and will work like a case-insensitive text search
-            selectedItems: [],
-            dropdownSettings: {
-              singleSelection: false,
-              text: "Select",
-              selectAllText: "Select All",
-              unSelectAllText: 'UnSelect All',
-              enableSearchFilter: true,
-              classes: ""
-            },
-            dropdownList: [
-              { id: 'Glenna Reichert', itemName: 'Glenna Reichert' },
-              { id: 'Kurtis Weissnat', itemName: 'Kurtis Weissnat' },
-              { id: 'Chelsey Dietrich', itemName: 'Chelsey Dietrich' },
-            ],
-          },
-        },
       },
       email: {
         title: 'Email',
-        filter: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: this.data,
-              searchFields: 'email',
-              titleField: 'email',
-            },
-          },
-        },
       },
       passed: {
         title: 'Passed',

@@ -2,6 +2,12 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 3.0.0
+
+* Add Angular 16 support
+* Remove ng2-completer
+* Remove angular2-multiselect-dropdown
+
 ## Version 2.10.0
 
 * Add `sanitizer`, `hiddenWhen`, and `disabledWhen` to `CustomAction` settings

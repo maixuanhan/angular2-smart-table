@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IColumnType, Settings } from 'angular2-smart-table';
+import {Component} from '@angular/core';
+import {IColumnType, Settings} from 'angular2-smart-table';
 
 @Component({
   selector: 'advanced-example-types',
@@ -133,17 +133,6 @@ export class AdvancedExamplesTypesComponent {
       name: {
         title: 'Full Name',
         type: IColumnType.Text,
-        editor: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: this.data,
-              searchFields: 'name',
-              titleField: 'name',
-              descriptionField: 'email',
-            },
-          },
-        },
       },
       username: {
         title: 'User Name',

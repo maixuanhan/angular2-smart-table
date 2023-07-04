@@ -135,6 +135,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular2-smart-table"
+  }
 }

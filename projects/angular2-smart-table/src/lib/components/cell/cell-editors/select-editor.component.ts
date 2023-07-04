@@ -12,7 +12,7 @@ import {DefaultEditor} from './default-editor';
             [name]="cell.getId()"
             [disabled]="!cell.isEditable()"
             (click)="onClick.emit($event)"
-            [multiple]="cell.getColumn().getConfig()?.multiple">
+    >
             (keydown.enter)="disableEnterKeySave || onEdited.emit($event)"
             (keydown.esc)="onStopEditing.emit()">
 

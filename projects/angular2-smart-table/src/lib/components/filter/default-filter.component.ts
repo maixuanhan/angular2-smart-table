@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {FilterDefault} from "./filter-default";
 
@@ -18,24 +18,12 @@ import {FilterDefault} from "./filter-default";
                        [column]="column"
                        (filter)="onFilter($event)">
       </checkbox-filter>
-      <completer-filter *ngSwitchCase="'completer'"
-                        [query]="query"
-                        [ngClass]="inputClass"
-                        [column]="column"
-                        (filter)="onFilter($event)">
-      </completer-filter>
       <date-filter *ngSwitchCase="'date'"
                         [query]="query"
                         [ngClass]="inputClass"
                         [column]="column"
                         (filter)="onFilter($event)">
       </date-filter>
-      <mselect-filter *ngSwitchCase="'multiple'"
-                        [query]="query"
-                        [ngClass]="inputClass"
-                        [column]="column"
-                        (filter)="onFilter($event)">
-      </mselect-filter>
       <input-filter *ngSwitchDefault
                     [query]="query"
                     [ngClass]="inputClass"
@@ -46,5 +34,4 @@ import {FilterDefault} from "./filter-default";
   `,
 })
 export class DefaultFilterComponent extends FilterDefault {
-  @Input() query!: string;
 }
