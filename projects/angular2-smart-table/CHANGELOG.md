@@ -5,8 +5,11 @@ This document lists the changes introduced by this fork.
 ## Version 3.0.0
 
 * Add Angular 16 support
+* Add proper typing to all settings
 * Remove ng2-completer
 * Remove angular2-multiselect-dropdown
+* Remove date filter type
+* Remove deprecated settings
 
 ## Version 2.10.0
 

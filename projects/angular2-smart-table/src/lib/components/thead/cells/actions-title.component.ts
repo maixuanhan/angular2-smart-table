@@ -22,6 +22,9 @@ export class ActionsTitleComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.actionsColumnTitle = this.grid.getSetting('actions.columnTitle');
+    this.actionsColumnTitle = 'Actions';
+    if (this.grid.settings.actions !== false) {
+      this.actionsColumnTitle = this.grid.settings.actions?.columnTitle ?? 'Actions';
+    }
   }
 }

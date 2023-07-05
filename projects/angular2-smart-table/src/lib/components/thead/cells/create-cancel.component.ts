@@ -41,8 +41,9 @@ export class TheadCreateCancelComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.createButtonContent = this.grid.getSetting('add.createButtonContent');
-    this.cancelButtonContent = this.grid.getSetting('add.cancelButtonContent');
+    // we can assume that default settings have been applied and all values are defined
+    this.createButtonContent = this.grid.settings.add!.createButtonContent!;
+    this.cancelButtonContent = this.grid.settings.add!.cancelButtonContent!;
     this.bypassSecurityTrust = this.grid.settings.add?.sanitizer?.bypassHtml ? 'html' : 'none';
   }
 }

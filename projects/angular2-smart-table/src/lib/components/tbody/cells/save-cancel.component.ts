@@ -47,8 +47,9 @@ export class TbodySaveCancelComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.saveButtonContent = this.grid.getSetting('edit.saveButtonContent');
-    this.cancelButtonContent = this.grid.getSetting('edit.cancelButtonContent')
+    // we can assume that default settings have been applied and all values are defined
+    this.saveButtonContent = this.grid.settings.edit!.saveButtonContent!;
+    this.cancelButtonContent = this.grid.settings.edit!.cancelButtonContent!;
     this.bypassSecurityTrust = this.grid.settings.edit?.sanitizer?.bypassHtml ? 'html' : 'none';
   }
 }

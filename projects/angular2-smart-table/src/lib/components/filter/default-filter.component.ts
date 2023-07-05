@@ -5,7 +5,7 @@ import {FilterDefault} from "./filter-default";
 @Component({
   selector: 'default-table-filter',
   template: `
-    <ng-container [ngSwitch]="column.getFilterType()">
+    <ng-container [ngSwitch]="column.filter.type">
       <select-filter *ngSwitchCase="'list'"
                      [query]="query"
                      [ngClass]="inputClass"
@@ -18,12 +18,6 @@ import {FilterDefault} from "./filter-default";
                        [column]="column"
                        (filter)="onFilter($event)">
       </checkbox-filter>
-      <date-filter *ngSwitchCase="'date'"
-                        [query]="query"
-                        [ngClass]="inputClass"
-                        [column]="column"
-                        (filter)="onFilter($event)">
-      </date-filter>
       <input-filter *ngSwitchDefault
                     [query]="query"
                     [ngClass]="inputClass"

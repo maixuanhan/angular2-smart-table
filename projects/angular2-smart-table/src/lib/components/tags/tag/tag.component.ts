@@ -8,12 +8,12 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class TagComponent {
 
-    @Input() item!: any;
+    @Input() item!: string;
 
     @Output() close = new EventEmitter<any>();
 
     closeClicked(evt: Event) {
         evt.stopPropagation();
-        this.close.emit(this.item.id);
+        this.close.emit(this.item);
     }
 }

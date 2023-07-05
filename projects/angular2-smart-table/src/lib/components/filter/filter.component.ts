@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
   selector: 'angular2-smart-table-filter',
   styleUrls: ['./filter.component.scss'],
   template: `
-      <div class="angular2-smart-filter" *ngIf="column.isFilterable" [ngSwitch]="column.getFilterType()">
+      <div class="angular2-smart-filter" *ngIf="column.isFilterable" [ngSwitch]="column.filter.type">
         <custom-table-filter *ngSwitchCase="'custom'"
                              [query]="query"
                              [column]="column"
@@ -36,7 +36,7 @@ export class FilterComponent extends FilterDefault implements OnChanges {
         if (filterConf && filterConf.filters && filterConf.filters.length === 0) {
           this.query = '';
 
-          // add a check for existing filters an set the query if one exists for this column
+          // add a check for existing filters and set the query if one exists for this column
           // this covers instances where the filter is set by user code while maintaining existing functionality
         } else if (filterConf && filterConf.filters && filterConf.filters.length > 0) {
           filterConf.filters.forEach((k: any, v: any) => {

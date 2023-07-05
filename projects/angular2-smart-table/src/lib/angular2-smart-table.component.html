@@ -1,5 +1,5 @@
 <angular2-smart-table-tags-list
-  [tags]="getNotVisibleColumns()" (close)="onShowHeader($event)"
+  [tags]="getNotVisibleColumnIds()" (close)="onShowColumn($event)"
 ></angular2-smart-table-tags-list>
 
 <div style="overflow-x: auto; -webkit-overflow-scrolling: touch">
@@ -14,7 +14,7 @@
       [createCancel]="createCancel"
       (create)="create.emit($event)"
       (selectAllRows)="onSelectAllRows()"
-      (hide)="onHideHeader($event)"
+      (hide)="onHideColumn($event)"
     ></thead>
 
     <tbody

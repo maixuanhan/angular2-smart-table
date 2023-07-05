@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Settings} from "angular2-smart-table";
 
 @Component({
   selector: 'advanced-example-filters',
@@ -65,7 +66,7 @@ export class AdvancedExampleFiltersComponent {
     },
   ];
 
-  settings = {
+  settings: Settings = {
     columns: {
       id: {
         title: 'ID',

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ServerDataSource } from 'angular2-smart-table';
+import {Component} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ServerDataSource, Settings} from 'angular2-smart-table';
 
 @Component({
   selector: 'advanced-example-server',
@@ -10,7 +10,7 @@ import { ServerDataSource } from 'angular2-smart-table';
 })
 export class AdvancedExampleServerComponent {
 
-  settings = {
+  settings: Settings = {
     columns: {
       id: {
         title: 'ID',

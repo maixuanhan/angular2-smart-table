@@ -87,7 +87,7 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   showActionColumnRight!: boolean;
   mode!: string;
   editInputClass!: string;
-  noDataMessage!: boolean;
+  noDataMessage!: string;
 
   get tableColumnsCount() {
     const actionColumn = (this.showActionColumnLeft || this.showActionColumnRight) ? 1 : 0;
@@ -98,10 +98,10 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   ngOnChanges() {
     this.isMultiSelectVisible = this.grid.isMultiSelectVisible();
     this.showActionColumnLeft = this.grid.showActionColumn('left');
-    this.mode = this.grid.getSetting('mode');
-    this.editInputClass = this.grid.getSetting('edit.inputClass');
+    this.mode = this.grid.settings.mode ?? 'inline';
+    this.editInputClass = this.grid.settings.edit?.inputClass ?? '';
     this.showActionColumnRight = this.grid.showActionColumn('right');
-    this.noDataMessage = this.grid.getSetting('noDataMessage');
+    this.noDataMessage = this.grid.settings.noDataMessage!;
   }
 
   getVisibleCells(cells: Array<Cell>): Array<Cell> {

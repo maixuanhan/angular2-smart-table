@@ -4,6 +4,7 @@ import {debounceTime, distinctUntilChanged, skip} from 'rxjs/operators';
 
 import {DefaultFilter} from './default-filter';
 import {defaultStringEqualsFilter, defaultStringInclusionFilter} from "../../../lib/data-source/local/local.filter";
+import {FilterSettings, ListFilterSettings} from "../../../lib/settings";
 
 @Component({
   selector: 'select-filter',
@@ -13,8 +14,8 @@ import {defaultStringEqualsFilter, defaultStringInclusionFilter} from "../../../
             #inputControl
             [(ngModel)]="query">
 
-        <option value="">{{ column.getFilterConfig().selectText }}</option>
-        <option *ngFor="let option of column.getFilterConfig().list" [value]="option.value">
+        <option value="">{{ config.selectText ?? 'Select...' }}</option>
+        <option *ngFor="let option of config.list" [value]="option.value">
           {{ option.title }}
         </option>
     </select>
@@ -24,8 +25,11 @@ export class SelectFilterComponent extends DefaultFilter implements OnInit {
 
   @ViewChild('inputControl', { read: NgControl, static: true }) inputControl!: NgControl;
 
+  config!: ListFilterSettings;
+
   ngOnInit() {
     this.column.filterFunction = this.onFilterValues.bind(this);
+    this.config = (this.column.filter as FilterSettings).config as ListFilterSettings;
 
     const exist = this.inputControl.valueChanges;
     if (!exist) {
@@ -41,8 +45,7 @@ export class SelectFilterComponent extends DefaultFilter implements OnInit {
   }
 
   onFilterValues(cellValue: string, search: string, data: any, cellName: string) {
-    const strictFilter = this.column.getFilterConfig()?.strict ?? false;
-    if (strictFilter) {
+    if (this.config.strict === undefined || this.config.strict) {
       return defaultStringEqualsFilter(cellValue, search, data, cellName);
     } else {
       return defaultStringInclusionFilter(cellValue, search, data, cellName);

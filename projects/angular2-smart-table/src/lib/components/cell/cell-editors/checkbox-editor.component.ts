@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {DefaultEditor} from './default-editor';
+import {CheckboxEditorSettings} from "../../../lib/settings";
 
 @Component({
   selector: 'checkbox-editor',
@@ -11,20 +12,30 @@ import {DefaultEditor} from './default-editor';
            class="form-control"
            [name]="cell.getId()"
            [disabled]="!cell.isEditable()"
-           [checked]="cell.getValue() == (cell.getColumn().getConfig()?.true || true)"
+           [checked]="cell.getValue() === trueVal"
            (click)="onClick.emit($event)"
            (change)="onChange($event)">
     `,
 })
-export class CheckboxEditorComponent extends DefaultEditor {
+export class CheckboxEditorComponent extends DefaultEditor implements OnInit {
+
+  trueVal = 'true';
+  falseVal = 'false';
 
   constructor() {
     super();
   }
 
+  ngOnInit() {
+    const config = this.cell.getColumn().editor.config;
+    if (config !== undefined) {
+      const ces = config as CheckboxEditorSettings;
+      this.trueVal = ces.true;
+      this.falseVal = ces.false;
+    }
+  }
+
   onChange(event: any) {
-    const trueVal = (this.cell.getColumn().getConfig() && this.cell.getColumn().getConfig().true) || true;
-    const falseVal = (this.cell.getColumn().getConfig() && this.cell.getColumn().getConfig().false) || false;
-    this.cell.newValue = event.target.checked ? trueVal : falseVal;
+    this.cell.newValue = event.target.checked ? this.trueVal : this.falseVal;
   }
 }

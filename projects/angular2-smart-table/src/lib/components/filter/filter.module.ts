@@ -10,13 +10,11 @@ import {InputFilterComponent} from './filter-types/input-filter.component';
 import {SelectFilterComponent} from './filter-types/select-filter.component';
 import {DefaultFilter} from './filter-types/default-filter';
 import {FilterDefault} from './filter-default';
-import {DateFilterComponent} from './filter-types/date-filter.component';
 
 const FILTER_COMPONENTS = [
   FilterDefault,
   DefaultFilter,
   FilterComponent,
-  DateFilterComponent,
   DefaultFilterComponent,
   CustomFilterComponent,
   CheckboxFilterComponent,

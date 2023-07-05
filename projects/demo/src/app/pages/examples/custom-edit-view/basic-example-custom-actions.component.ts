@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { BasicExampleCustomActionsItemComponent } from './basic-example-custom-actions-item.component';
+import {Component} from '@angular/core';
+import {BasicExampleCustomActionsItemComponent} from './basic-example-custom-actions-item.component';
+import {Settings} from "angular2-smart-table";
 
 @Component({
   selector: 'basic-example-custom-actions',
@@ -9,7 +10,7 @@ import { BasicExampleCustomActionsItemComponent } from './basic-example-custom-a
 })
 export class BasicExampleCustomActionsComponent {
 
-  settings = {
+  settings: Settings = {
     actions: {
       custom: [
         {

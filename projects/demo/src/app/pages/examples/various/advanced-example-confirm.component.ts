@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
-import { LocalDataSource } from 'angular2-smart-table';
+import {LocalDataSource, Settings} from 'angular2-smart-table';
 
 @Component({
   selector: 'advance-example-comfirm',
@@ -15,7 +15,7 @@ import { LocalDataSource } from 'angular2-smart-table';
 })
 export class AdvancedExampleConfirmComponent {
 
-  settings = {
+  settings: Settings = {
     delete: {
       confirmDelete: true,
     },

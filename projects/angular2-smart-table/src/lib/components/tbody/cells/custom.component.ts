@@ -39,11 +39,12 @@ export class TbodyCustomComponent {
   @Output() custom = new EventEmitter<CustomActionEvent>();
 
   get customActions(): CustomAction[] {
-    return this.grid.getSetting('actions.custom') ?? [];
+    if (this.grid.settings.actions === false) return [];
+    return this.grid.settings.actions?.custom ?? [];
   }
 
   buttonContent(action: CustomAction): string {
-    return action.customButtonContent ?? action.title ?? action.name;
+    return action.customButtonContent ?? action.name;
   }
 
   bypassSecurityTrustFor(action: CustomAction): SecurityTrustType {

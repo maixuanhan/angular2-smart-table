@@ -1,10 +1,10 @@
 import {Observable, Subject, Subscription} from 'rxjs';
 
-import {Deferred, getDeepFromObject, getPageForRowIndex} from './helpers';
+import {Deferred, getPageForRowIndex} from './helpers';
 import {Column} from './data-set/column';
 import {Row} from './data-set/row';
 import {DataSet} from './data-set/data-set';
-import {DataSource, DataSourceChangeEvent} from './data-source/data-source';
+import {DataSource, DataSourceChangeEvent, ISortConfig} from './data-source/data-source';
 import {EventEmitter, Type} from '@angular/core';
 
 import {Settings} from "./settings";
@@ -18,6 +18,12 @@ export class Grid {
   settings!: Settings;
   dataSet!: DataSet;
 
+  /**
+   * Points to an element in all data
+   *
+   * when < 0 all lines must be deselected
+   */
+  selectedRowIndex = -1;
   onSelectRowSource = new Subject<any>();
 
   private sourceOnChangedSubscription!: Subscription;
@@ -39,28 +45,26 @@ export class Grid {
   }
 
   showActionColumn(position: string): boolean {
-    return this.isCurrentActionsPosition(position) && this.isActionsVisible();
-  }
-
-  isCurrentActionsPosition(position: string): boolean {
-    return position == this.getSetting('actions.position');
-  }
-
-  isActionsVisible(): boolean {
+    // no actions configured, therefore now actions visible
     if (this.settings.actions === false || this.settings.actions === undefined) {
       return false;
     }
+    // not the correct position
+    if (position !== this.settings.actions?.position) {
+      return false;
+    }
+    // column is visible if and only if at least one action is visible - check all of them
     return this.settings.actions.add || this.settings.actions.edit || this.settings.actions.delete ||
       (this.settings.actions.custom?.length ?? 0) > 0 ||
       this.getExpandedRowComponentClass() !== undefined;
   }
 
   isMultiSelectVisible(): boolean {
-    return ['multi', 'multi_filtered'].indexOf(this.getSetting('selectMode')) > -1;
+    return this.settings.selectMode === 'multi' || this.settings.selectMode === 'multi_filtered';
   }
 
   getExpandedRowComponentClass(): Type<any> | undefined {
-    return this.settings.expand?.component ?? this.settings.expandedRowComponent;
+    return this.settings.expand?.component;
   }
 
   getNewRow(): Row {
@@ -69,7 +73,7 @@ export class Grid {
 
   setSettings(settings: Settings) {
     this.settings = settings;
-    this.dataSet = new DataSet([], this.getSetting('columns'));
+    this.dataSet = new DataSet([], this.settings.columns);
 
     if (this.source) {
       this.source.refresh();
@@ -90,10 +94,6 @@ export class Grid {
       const changedRow = this.dataSet.findRowByData(data);
       changedRow.setData(data);
     });
-  }
-
-  getSetting(name: string, defaultValue?: any): any {
-    return getDeepFromObject(this.settings, name, defaultValue);
   }
 
   getColumns(): Array<Column> {
@@ -143,7 +143,7 @@ export class Grid {
       // doing nothing
     });
 
-    if (this.getSetting('add.confirmCreate')) {
+    if (this.settings.add?.confirmCreate ?? false) {
       confirmEmitter.emit({
         newData: row.getNewData(),
         source: this.source,
@@ -170,7 +170,7 @@ export class Grid {
       // doing nothing
     });
 
-    if (this.getSetting('edit.confirmSave')) {
+    if (this.settings.edit?.confirmSave ?? false) {
       confirmEmitter.emit({
         row: row,
         data: row.getData(),
@@ -192,7 +192,7 @@ export class Grid {
       // doing nothing
     });
 
-    if (this.getSetting('delete.confirmDelete')) {
+    if (this.settings.delete?.confirmDelete ?? false) {
       confirmEmitter.emit({
         row: row,
         data: row.getData(),
@@ -207,7 +207,7 @@ export class Grid {
   processDataChange(changes: DataSourceChangeEvent) {
     if (this.shouldProcessChange(changes)) {
       this.dataSet.setData(changes.elements, this.getSelectedItems());
-      if (this.getSetting('selectMode') === 'single') {
+      if (this.settings.selectMode === 'single') {
         if (this.dataSet.getRows().length > 0) {
           const row = this.determineRowToSelect(changes);
           this.onSelectRowSource.next(row);
@@ -221,26 +221,20 @@ export class Grid {
   shouldProcessChange(changes: DataSourceChangeEvent): boolean {
     if (['filter', 'sort', 'page', 'remove', 'refresh', 'load', 'empty', 'paging'].indexOf(changes.action) !== -1) {
       return true;
-    } else if (['prepend', 'append'].indexOf(changes.action) !== -1 && !this.getSetting('pager.display')) {
+    } else if (['prepend', 'append'].indexOf(changes.action) !== -1 && (this.settings.pager?.display ?? true)) {
       return true;
     }
 
     return false;
   }
 
-  /**
-   * @breaking-change 1.8.0
-   * Need to add `| null` in return type
-   *
-   * TODO: move to selectable? Separate directive
-   */
   determineRowToSelect(changes: DataSourceChangeEvent): Row | null {
 
     if (['load', 'page', 'filter', 'sort', 'refresh'].indexOf(changes.action) !== -1) {
       return this.dataSet.select(this.getRowIndexToSelect());
     }
 
-    if (this.shouldSkipSelection()) {
+    if (this.selectedRowIndex < 0) {
       return null;
     }
 
@@ -269,32 +263,28 @@ export class Grid {
     return null;
   }
 
-  prepareSource(source: any): DataSource {
-    const initialSource: any = this.getInitialSort();
+  prepareSource(source: DataSource): DataSource {
+    const initialSource = this.getInitialSort();
     if (initialSource && initialSource['field'] && initialSource['direction']) {
       source.setSort([initialSource], false);
     }
-    source.setPaging(this.getPageToSelect(source), this.getSetting('pager.perPage'), false);
+    source.setPaging(this.getPageToSelect(source), this.settings.pager?.perPage ?? 10, false);
 
     source.refresh();
     return source;
   }
 
-  getInitialSort() {
-    const sortConf: any = {};
-    this.getColumns().forEach((column: Column) => {
+  getInitialSort(): ISortConfig | null {
+    for (const column of this.getColumns()) {
       if (column.isSortable && column.defaultSortDirection) {
-        sortConf['field'] = column.id;
-        sortConf['direction'] = column.defaultSortDirection;
-        sortConf['compare'] = column.getCompareFunction();
+        return {
+          field: column.id,
+          direction: column.defaultSortDirection,
+          compare: column.compareFunction,
+        };
       }
-    });
-    return sortConf;
-  }
-
-  getSelectedRows(): Array<any> {
-    return this.dataSet.getRows()
-      .filter(r => r.isSelected);
+    }
+    return null;
   }
 
   getSelectedItems(): Array<any> {
@@ -306,7 +296,7 @@ export class Grid {
     this.dataSet.getRows().forEach(r => r.isSelected = status);
 
     // advise the data source to also update the selected elements
-    await this.source.selectAllItems(status, this.getSetting('selectMode') === 'multi_filtered');
+    await this.source.selectAllItems(status, this.settings.selectMode === 'multi_filtered');
   }
 
   getFirstRow(): Row {
@@ -318,10 +308,12 @@ export class Grid {
   }
 
   private getSelectionInfo(): { perPage: number, page: number, selectedRowIndex: number, switchPageToSelectedRowPage: boolean } {
-    const switchPageToSelectedRowPage: boolean = this.getSetting('switchPageToSelectedRowPage');
-    const selectedRowIndex: number = Number(this.getSetting('selectedRowIndex', 0)) || 0;
-    const {perPage, page}: { perPage: number, page: number } = this.getSetting('pager');
-    return {perPage, page, selectedRowIndex, switchPageToSelectedRowPage};
+    return {
+      perPage: this.settings.pager?.perPage ?? 10,
+      page: this.settings.pager?.page ?? 1,
+      selectedRowIndex: this.selectedRowIndex,
+      switchPageToSelectedRowPage: this.settings.switchPageToSelectedRowPage ?? false,
+    };
   }
 
   private getRowIndexToSelect(): number {
@@ -356,21 +348,5 @@ export class Grid {
     }
     const maxPageAmount: number = Math.ceil(source.count() / perPage);
     return maxPageAmount ? Math.min(pageToSelect, maxPageAmount) : pageToSelect;
-  }
-
-  private shouldSkipSelection(): boolean {
-    /**
-     * For backward compatibility when using `selectedRowIndex` with non-number values - ignored.
-     *
-     * Therefore, in order to select a row after some changes,
-     * the `selectedRowIndex` value must be invalid or >= 0 (< 0 means that no row is selected).
-     *
-     * `Number(value)` returns `NaN` on all invalid cases, and comparisons with `NaN` always return `false`.
-     *
-     * !!! We should skip a row only in cases when `selectedRowIndex` < 0
-     * because when < 0 all lines must be deselected
-     */
-    const selectedRowIndex = Number(this.getSetting('selectedRowIndex'));
-    return selectedRowIndex < 0;
   }
 }

@@ -1,18 +1,11 @@
 import {Cell} from "./data-set/cell";
 import {Row} from "./data-set/row";
-
-/**
- * @deprecated just use 'single' or 'multi'
- */
-export enum SelectModeOptions {
-  Single = "single",
-  Multi = "multi"
-}
+import {ViewCell} from "../components/cell/cell-view-mode/view-cell";
 
 export interface Settings {
-  columns?: IColumns;
+  columns: IColumns;
   resizable?: boolean;
-  hideable?: boolean; // true = i can hide columns
+  hideable?: boolean;
   mode?: 'external' | 'inline';
   hideHeader?: boolean;
   hideSubHeader?: boolean;
@@ -23,15 +16,10 @@ export interface Settings {
   add?: AddAction;
   delete?: DeleteAction;
   filter?: Filter;
-  /**
-   * @deprecated use `expand.component`
-   */
-  expandedRowComponent?: any;
   expand?: Expand;
   pager?: Pager;
-  rowClassFunction?: Function;
+  rowClassFunction?: RowClassFunction;
   selectMode?: 'single' | 'multi' | 'multi_filtered';
-  selectedRowIndex?: number;
   switchPageToSelectedRowPage?: boolean;
 }
 
@@ -40,11 +28,6 @@ export interface Filter {
 }
 
 export interface Expand {
-  /**
-   * The content of the expand button.
-   * @deprecated use buttonContent property
-   */
-  expandRowButtonContent?: string;
   /**
    * The angular component that shall be rendered when the row is expanded.
    * The data of the row is assigned to a property rowData.
@@ -67,16 +50,15 @@ export interface IColumns {
   [key: string]: IColumn;
 }
 
-export enum IColumnType {
-  Text = "text",
-  Html = "html",
-  Custom = "custom"
-}
+export type IColumnType = 'text' | 'html' | 'custom';
 
 export type ISortDirection = 'asc' | 'desc' | null; // null means: do not sort
 
+export type RowClassFunction = (row: Row) => string;
+export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
 export type ColumnValuePrepareFunction = (cellValue: any, rowData: any, cell: Cell) => any;
 export type ColumnFilterFunction = (cellValue: any, searchString: string, allData: any, cellName: string, rowData: any) => boolean;
+export type ColumnComponentInitFunction = (component: any, cell: ViewCell) => void;
 
 export interface SanitizerSettings {
   /**
@@ -84,6 +66,44 @@ export interface SanitizerSettings {
    * Security note: do not use this, if the content can be controlled by the user!
    */
   bypassHtml?: boolean;
+}
+
+export interface TextEditorSettings {
+  disableEnterKeySave?: boolean;
+}
+
+export interface ListEditorSettings {
+  disableEnterKeySave?: boolean;
+  list: { title: string; value: string; }[];
+}
+
+export interface CheckboxEditorSettings {
+  "true": string;
+  "false": string;
+}
+
+export interface ListFilterSettings {
+  list: { title: string; value: string; }[];
+  selectText?: string;
+  strict?: boolean;
+}
+
+export interface CheckboxFilterSettings {
+  "true": string;
+  "false": string;
+  resetText: string;
+}
+
+export interface EditorSettings {
+  type: 'text' | 'textarea' | 'list' | 'checkbox' | 'custom';
+  config?: TextEditorSettings | ListEditorSettings | CheckboxEditorSettings;
+  component?: any;
+}
+
+export interface FilterSettings {
+  type: 'text' | 'list' | 'checkbox' | 'custom';
+  config?: ListFilterSettings | CheckboxFilterSettings;
+  component?: any;
 }
 
 export interface IColumn {
@@ -96,13 +116,13 @@ export interface IColumn {
   width?: string;
   sortDirection?: ISortDirection;
   defaultSortDirection?: ISortDirection;
-  editor?: { type: string, config?: any, component?: any };
-  filter?: { type: string, config?: any, component?: any } | boolean;
+  editor?: EditorSettings;
+  filter?: FilterSettings;
   renderComponent?: any;
-  compareFunction?: Function;
+  compareFunction?: ColumnCompareFunction;
   valuePrepareFunction?: ColumnValuePrepareFunction;
   filterFunction?: ColumnFilterFunction;
-  onComponentInitFunction?: Function;
+  onComponentInitFunction?: ColumnComponentInitFunction;
 
   placeholder?: string;
   hide?: boolean;
@@ -166,10 +186,6 @@ export interface Pager {
 
 export interface CustomAction {
   name: string;
-  /**
-   * Historical name of the customButtonContent attribute.
-   * @deprecated will be removed in 3.0.0
-   */
   title?: string;
   customButtonContent?: string;
   sanitizer?: SanitizerSettings;

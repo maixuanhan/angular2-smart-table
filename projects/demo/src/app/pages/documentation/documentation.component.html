@@ -92,14 +92,6 @@
       </td>
     </tr>
     <tr>
-      <td>class</td>
-      <td><span class="highlight">string</span></td>
-      <td>''</td>
-      <td>
-        Deprecated alias for classHeader.
-      </td>
-    </tr>
-    <tr>
       <td>width</td>
       <td><span class="highlight">string</span></td>
       <td>''</td>
@@ -122,7 +114,6 @@
       <td>
         Whether this column is editable or not. If this is false you can still enter a value when you add
         a new row. Use the <span class="highlight">isAddable</span> setting to control the behavior when adding a new row.
-        Note: the deprecated alias for this setting is <span class="highlight">editable</span>.
       </td>
     </tr>
     <tr>
@@ -163,14 +154,6 @@
       </td>
     </tr>
     <tr>
-      <td>expandedRowComponent</td>
-      <td><span class="highlight">any</span></td>
-      <td>undefined</td>
-      <td>
-        <em>Deprecated: use <span class="highlight">expand.component</span>.</em>
-      </td>
-    </tr>
-    <tr>
       <td>expand.component</td>
       <td><span class="highlight">any</span></td>
       <td>undefined</td>
@@ -178,14 +161,6 @@
         Any angular component to be displayed inside expanded row,
         this will automatically show button on action column if any component is provided via setting.
         Component will have row data passed and assigned to its variable <span class="highlight">rowData</span>
-      </td>
-    </tr>
-    <tr>
-      <td>expand.expandRowButtonContent</td>
-      <td><span class="highlight">HTML</span></td>
-      <td>'Expand'</td>
-      <td>
-        <em>Deprecated. Use <span class="highlight">expand.buttonContent</span>.</em>
       </td>
     </tr>
     <tr>
@@ -226,7 +201,7 @@
     </tr>
     <tr>
       <td>onComponentInitFunction</td>
-      <td><span class="highlight">Function</span></td>
+      <td><span class="highlight">(component: any, cell: ViewCell) => void</span></td>
       <td>null</td>
       <td>
         Function which will be invoked after <span class="highlight">renderComponent</span> instantiated and before ngOnInit hook. This function gets <span class="highlight">renderComponent</span> instance in first param and the <span class="highlight">ViewCell</span> as second param.
@@ -237,7 +212,7 @@
       <td><span class="highlight">Object</span></td>
       <td>undefined</td>
       <td>
-        Editor attributes settings
+        Advanced editor settings.
       </td>
     </tr>
     <tr>
@@ -270,7 +245,7 @@
       <td><span class="highlight">boolean</span></td>
       <td>false</td>
       <td>
-        Only on editor types <span class="highlight">text</span>, <span class="highlight">textarea</span>, <span class="highlight">select</span>.<br>
+        Only on editor types <span class="highlight">text</span>, <span class="highlight">textarea</span>, <span class="highlight">list</span>.<br>
         Whether hitting ENTER key should trigger saving.
       </td>
     </tr>
@@ -303,15 +278,84 @@
       </td>
     </tr>
     <tr>
+      <td><span class="nested-obj">editor.config</span>.selectText</td>
+      <td><span class="highlight">string</span></td>
+      <td>'Select...'</td>
+      <td>
+        Only on <span class="highlight">list</span> type. The text shown in the first select option that
+        denotes the "empty" selection (no filter).
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">editor.config</span>.strict</td>
+      <td><span class="highlight">boolean</span></td>
+      <td>true</td>
+      <td>
+        Only on <span class="highlight">list</span> type. If <code>false</code>, this filter only tests
+        for string inclusion like a normal text filter.
+      </td>
+    </tr>
+    <tr>
       <td>filter</td>
       <td><span class="highlight">Object</span></td>
       <td>undefined</td>
       <td>
-        Column filter attributes settings. This object accepts the same properties as the <code>editor</code> object.<br>
-        The available types are: <code>checkbox</code>, <code>list</code>, <code>date</code>.<br>
-        The <code>checkbox</code> type accepts one more optional property compared to the <code>editor</code> version: <span class="highlight">resetText: string</span>.
-        It defines the text of the button to reset the checkbox selection.<br>
+        Advanced filter settings.
         <a class="source" href="https://github.com/dj-fiorex/angular2-smart-table/blob/master/projects/demo/src/app/pages/examples/filter/advanced-example-filters.component.ts">Click here to see an example</a> on how to configure the filters.
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter</span>.type</td>
+      <td><span class="highlight">'text' | 'list' | 'checkbox' | 'custom'</span></td>
+      <td>'text'</td>
+      <td>
+        The type of filter displayed. When <span class="highlight">custom</span> is selected, you need to specify
+        <span class="highlight">filter.component</span>.
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter</span>.config</td>
+      <td><span class="highlight">Object</span></td>
+      <td>undefined</td>
+      <td>
+        Filter configuration settings. Mandatory only for filter type <span class="highlight">list</span>
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter.config</span>.true</td>
+      <td><span class="highlight">string</span></td>
+      <td>'true'</td>
+      <td>
+        Only on <span class="highlight">checkbox</span> type.<br>
+        Defines the value to assign when the checkbox is checked.
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter.config</span>.false</td>
+      <td><span class="highlight">string</span></td>
+      <td>'false'</td>
+      <td>
+        Only on <span class="highlight">checkbox</span> type.<br>
+        Defines the value to assign when the checkbox is not checked.
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter.config</span>.resetText</td>
+      <td><span class="highlight">string</span></td>
+      <td>'reset'</td>
+      <td>
+        Only on <span class="highlight">checkbox</span> type.<br>
+        Defines the text of the link that is shown to reset the filter.
+      </td>
+    </tr>
+    <tr>
+      <td><span class="nested-obj">filter.config</span>.list</td>
+      <td><span class="highlight">Array</span></td>
+      <td>[ ]</td>
+      <td>
+        Only on <span class="highlight">list</span> type. Example format:<br>
+        <code>{{ '{' }} value: 'Element Value', title: 'Element Title' {{ '}' }}</code><br>
+        Html is supported if column type is <span class="highlight">'html'</span>
       </td>
     </tr>
     <tr>
@@ -333,7 +377,14 @@
       <td>true</td>
       <td>
         Column sort settings, enable/disable.
-        Note: the deprecated alias for this setting is <span class="highlight">sort</span>.
+      </td>
+    </tr>
+    <tr>
+      <td>isFilterable</td>
+      <td><span class="highlight">boolean</span></td>
+      <td>true</td>
+      <td>
+        Column filter settings, enable/disable.
       </td>
     </tr>
     <tr>
@@ -348,7 +399,7 @@
     </tr>
     <tr>
       <td>compareFunction</td>
-      <td><span class="highlight">Function</span></td>
+      <td><span class="highlight">(direction: number, left: any, right: any) => number</span></td>
       <td>
         undefined
       </td>
@@ -407,16 +458,6 @@
       <td>false</td>
       <td>
         Determines whether the page shall be changed if necessary on programmatic row selection.
-      </td>
-    </tr>
-    <tr>
-      <td>selectedRowIndex</td>
-      <td><span class="highlight">'number'</span></td>
-      <td>0</td>
-      <td>
-        Used internally for programmatic row selection. Do not rely on this value.
-        Use the <span class="highlight">selectRow()</span> function to perform programmatic
-        row selection and react on the respective events to determine the selected row(s).
       </td>
     </tr>
     <tr>
@@ -538,14 +579,6 @@
       <td>
         If no <span class="highlight">renderComponent</span> is defined, this text is displayed.
         Otherwise, the component can access this title via the <span class="highlight">action</span> input parameter.
-      </td>
-    </tr>
-    <tr>
-      <td><span class="nested-obj">actions.custom[i].</span>title</td>
-      <td><span class="highlight">string</span></td>
-      <td>undefined</td>
-      <td>
-        Deprecated attribute for <span class="highlight">customButtonContent</span>.
       </td>
     </tr>
     <tr>

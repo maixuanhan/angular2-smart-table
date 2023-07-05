@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CustomAction} from 'angular2-smart-table';
 
 @Component({
   selector: 'basic-example-custom-actions-item',
   template: `
-    <a href="#">{{action.title}} {{renderValue}} </a>
+    <a href="#">{{action.name}} {{renderValue}} </a>
   `,
 })
 export class BasicExampleCustomActionsItemComponent implements OnInit {

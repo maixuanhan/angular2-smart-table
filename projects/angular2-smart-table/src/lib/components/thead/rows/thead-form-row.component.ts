@@ -44,7 +44,7 @@ export class TheadFormRowComponent implements OnChanges {
     this.isMultiSelectVisible = this.grid.isMultiSelectVisible();
     this.showActionColumnLeft = this.grid.showActionColumn('left');
     this.showActionColumnRight = this.grid.showActionColumn('right');
-    this.addInputClass = this.grid.getSetting('add.inputClass');
+    this.addInputClass = this.grid.settings.add?.inputClass ?? '';
   }
 
   getVisibleCells(cells: Array<Cell>): Array<Cell> {
