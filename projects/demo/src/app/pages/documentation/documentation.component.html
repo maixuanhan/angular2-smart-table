@@ -365,10 +365,9 @@
         undefined
       </td>
       <td>
-        Function run against a value before it gets inserted into a cell.
-        You can use it to modify how a value is displayed in the cell.
+        Function that is used by the cell to compute the displayed value.
         <br>
-        This function will be invoked with 3 parameters: cellValue, rowData, cell
+        This function will be invoked with two parameters: (rawValue: string, cell: Cell)
       </td>
     </tr>
     <tr>

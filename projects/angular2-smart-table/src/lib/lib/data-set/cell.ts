@@ -3,10 +3,14 @@ import {Row} from './row';
 
 export class Cell {
 
-  newValue: string = '';
+  newValue: string;
+  private cachedValue: string;
+  private cachedPreparedValue: string;
 
   constructor(protected value: string, protected row: Row, protected column: Column) {
     this.newValue = value;
+    this.cachedValue = value;
+    this.cachedPreparedValue = this.getPreparedValue();
   }
 
   getColumn(): Column {
@@ -21,8 +25,15 @@ export class Cell {
    * Gets the value (after post-processing with valuePrepareFunction).
    */
   getValue(): string {
+    if (this.cachedValue === this.value) return this.cachedPreparedValue;
+    this.cachedPreparedValue = this.getPreparedValue();
+    this.cachedValue = this.value;
+    return this.cachedPreparedValue;
+  }
+
+  protected getPreparedValue(): string {
     const prepare = this.column.valuePrepareFunction ?? ((v) => v);
-    return prepare.call(null, this.value, this.row.getData(), this);
+    return prepare.call(null, this.value, this);
   }
 
   /**

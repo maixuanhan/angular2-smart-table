@@ -6,6 +6,7 @@ This document lists the changes introduced by this fork.
 
 * Add Angular 16 support
 * Add proper typing to all settings
+* Improve signature of `valuePrepareFunction`
 * Remove ng2-completer
 * Remove angular2-multiselect-dropdown
 * Remove date filter type
