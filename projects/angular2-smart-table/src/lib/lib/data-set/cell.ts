@@ -5,7 +5,7 @@ export class Cell {
 
   newValue: string = '';
 
-  constructor(protected value: any, protected row: Row, protected column: Column) {
+  constructor(protected value: string, protected row: Row, protected column: Column) {
     this.newValue = value;
   }
 
@@ -28,11 +28,11 @@ export class Cell {
   /**
    * Returns the raw value that has not been post-processed by the valuePrepareFunction.
    */
-  getRawValue(): any {
+  getRawValue(): string {
     return this.value;
   }
 
-  setValue(value: any): any {
+  setValue(value: string) {
     this.newValue = value;
   }
 

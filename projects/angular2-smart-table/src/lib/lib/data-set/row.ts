@@ -50,14 +50,7 @@ export class Row {
   process() {
     this.cells = [];
     this._dataSet.getColumns().forEach((column: Column) => {
-      const cell = this.createCell(column);
-      this.cells.push(cell);
+      this.cells.push(new Cell(`${this.data[column.id] ?? ''}`, this, column));
     });
-  }
-
-  createCell(column: Column): Cell {
-    const defValue = (column as any).settings.defaultValue ? (column as any).settings.defaultValue : '';
-    const value = typeof this.data[column.id] === 'undefined' ? defValue : this.data[column.id];
-    return new Cell(value, this, column);
   }
 }

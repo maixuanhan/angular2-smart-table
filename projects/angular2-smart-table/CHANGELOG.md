@@ -10,6 +10,7 @@ This document lists the changes introduced by this fork.
 * Remove angular2-multiselect-dropdown
 * Remove date filter type
 * Remove deprecated settings
+* Remove undocumented settings
 
 ## Version 2.10.0
 
