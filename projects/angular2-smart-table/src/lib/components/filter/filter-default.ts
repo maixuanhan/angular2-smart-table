@@ -14,10 +14,14 @@ export class FilterDefault {
   @Input() query: string = '';
 
   onFilter(query: string) {
-    this.source.addFilter({
-      field: this.column.id,
-      search: query,
-      filter: this.column.filterFunction,
-    });
+    if (query === '') {
+      this.source.removeFilter(this.column.id);
+    } else {
+      this.source.addFilter({
+        field: this.column.id,
+        search: query,
+        filter: this.column.filterFunction,
+      });
+    }
   }
 }

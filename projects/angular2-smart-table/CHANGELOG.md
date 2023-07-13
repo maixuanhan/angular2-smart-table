@@ -7,6 +7,12 @@ This document lists the changes introduced by this fork.
 * Add Angular 16 support
 * Add proper typing to all settings
 * Improve signatures of `valuePrepareFunction`, and `filterFunction`
+* Change how filters are configured:
+  * Add `removeFilter()` method
+  * Change `setFilter()` to always remove all existing filters, first
+  * Change filters to not automatically ignore empty strings
+  * Remove `andOperator` parameter from `setFilter()` and `addFilter()`
+* Fix inconsistent return types between `DataSource` methods and their `LocalDataSource` implementations
 * Remove ng2-completer
 * Remove angular2-multiselect-dropdown
 * Remove date filter type

@@ -32,19 +32,14 @@ export class FilterComponent extends FilterDefault implements OnChanges {
         this.dataChangedSub.unsubscribe();
       }
       this.dataChangedSub = this.source.onChanged().subscribe((dataChanges) => {
-        const filterConf = this.source.getFilter();
-        if (filterConf && filterConf.filters && filterConf.filters.length === 0) {
-          this.query = '';
-
-          // add a check for existing filters and set the query if one exists for this column
-          // this covers instances where the filter is set by user code while maintaining existing functionality
-        } else if (filterConf && filterConf.filters && filterConf.filters.length > 0) {
-          filterConf.filters.forEach((k: any, v: any) => {
-            if (k.field == this.column.id) {
-              this.query = k.search;
-            }
-          });
+        let newQuery = '';
+        for (const f of dataChanges.filter) {
+          if (f.field == this.column.id) {
+            newQuery = f.search;
+            break;
+          }
         }
+        this.query = newQuery;
       });
     }
   }

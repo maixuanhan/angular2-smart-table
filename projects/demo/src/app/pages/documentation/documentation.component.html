@@ -1302,9 +1302,6 @@
             </ul>
           </li>
           <li>
-            andOperator: <span class="highlight">boolean</span> - how to process multiple filters (as AND or as OR), default = true (AND)
-          </li>
-          <li>
             doEmit: <span class="highlight">boolean</span> - emit event (to refresh the table) or not, default = true.
             Set this to false if you want to prepare a configuration without refreshing the table
             (e.g. to avoid a HTTP request from a ServerDataSource).
@@ -1329,9 +1326,6 @@
             </ul>
           </li>
           <li>
-            andOperator: <span class="highlight">boolean</span> - how to process multiple filters (as AND or as OR), default = true (AND)
-          </li>
-          <li>
             doEmit: <span class="highlight">boolean</span> - emit event (to refresh the table) or not, default = true.
             Set this to false if you want to prepare a configuration without refreshing the table
             (e.g. to avoid a HTTP request from a ServerDataSource).
@@ -1339,7 +1333,7 @@
         </ul>
       </td>
       <td>
-        Set table filter for one column, example: <br>
+        Set table filter for one column, replacing an existing filter for that column. Example: <br>
         <code>this.source.addFilter({{ '{' }} field: 'id', search: 'foobar' {{ '}' }});</code>
       </td>
     </tr>
@@ -1349,11 +1343,7 @@
         none
       </td>
       <td>
-        Returns an <span class="highlight">Object</span> of the following form:
-        <ul>
-          <li>filters - <span class="highlight">Array</span> - array of filter objects (see above)</li>
-          <li>andOperator - <span class="highlight">boolean</span> - how the filters are combined (AND or OR), default = true (AND)</li>
-        </ul>
+        Returns an <span class="highlight">Array</span> of filter objects (see above).
       </td>
     </tr>
     <tr>

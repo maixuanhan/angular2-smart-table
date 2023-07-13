@@ -13,11 +13,6 @@ export interface IFilterConfig {
   filter?: ColumnFilterFunction,
 }
 
-export interface IDataSourceFilter {
-  filters: Array<IFilterConfig>,
-  andOperator: boolean;
-}
-
 export interface IPagingConfig {
   page: number;
   perPage: number;
@@ -27,7 +22,7 @@ export interface DataSourceChangeEvent {
   action: string,
   elements: any, // TODO: this should be Array<any> but getElements() returns Promise<any> for some reason....
   paging: IPagingConfig,
-  filter: IDataSourceFilter;
+  filter: IFilterConfig[];
   sort: ISortConfig[];
 }
 
@@ -42,7 +37,7 @@ export abstract class DataSource {
   abstract getElements(): Promise<any>;
   abstract getFilteredAndSorted(): Promise<any>;
   abstract getSort(): Array<ISortConfig>;
-  abstract getFilter(): IDataSourceFilter;
+  abstract getFilter(): Array<IFilterConfig>;
   abstract getPaging(): IPagingConfig;
 
   /**
@@ -79,7 +74,7 @@ export abstract class DataSource {
     return Promise.resolve();
   }
 
-  onChanged(): Observable<any> {
+  onChanged(): Observable<DataSourceChangeEvent> {
     return this.onChangedSource.asObservable();
   }
 
@@ -162,13 +157,19 @@ export abstract class DataSource {
     }
   }
 
-  setFilter(conf: Array<IFilterConfig>, andOperator?: boolean, doEmit?: boolean) {
+  setFilter(conf: Array<IFilterConfig>, doEmit?: boolean) {
     if (doEmit) {
       this.emitOnChanged('filter');
     }
   }
 
-  addFilter(fieldConf: IFilterConfig, andOperator?: boolean, doEmit?: boolean) {
+  addFilter(fieldConf: IFilterConfig, doEmit?: boolean) {
+    if (doEmit) {
+      this.emitOnChanged('filter');
+    }
+  }
+
+  removeFilter(fieldName: string, doEmit?: boolean) {
     if (doEmit) {
       this.emitOnChanged('filter');
     }

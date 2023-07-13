@@ -14,54 +14,63 @@ export class AdvancedExampleFiltersComponent {
       id: 4,
       name: 'Patricia Lebsack',
       email: 'Julianne.OConner@kory.org',
+      status: 'Active',
       passed: 'Yes',
     },
     {
       id: 5,
       name: 'Chelsey Dietrich',
       email: 'Lucio_Hettinger@annie.ca',
+      status: 'Active',
       passed: 'No',
     },
     {
       id: 6,
       name: 'Mrs. Dennis Schulist',
       email: 'Karley_Dach@jasper.info',
+      status: 'Active',
       passed: 'Yes',
     },
     {
       id: 7,
       name: 'Kurtis Weissnat',
       email: 'Telly.Hoeger@billy.biz',
+      status: 'Inactive',
       passed: 'No',
     },
     {
       id: 8,
       name: 'Nicholas Runolfsdottir V',
       email: 'Sherwood@rosamond.me',
+      status: 'Active',
       passed: 'Yes',
     },
     {
       id: 9,
       name: 'Glenna Reichert',
       email: 'Chaim_McDermott@dana.io',
+      status: 'Active',
       passed: 'No',
     },
     {
       id: 10,
       name: 'Clementina DuBuque',
       email: 'Rey.Padberg@karina.biz',
+      status: 'Inactive',
       passed: 'No',
     },
     {
       id: 11,
       name: 'Nicholas DuBuque',
       email: 'Rey.Padberg@rosamond.biz',
+      status: 'Active',
       passed: 'Yes',
     },
     {
       id: 12,
       name: 'Chelsey Dietrichdottir',
       email: 'Lucio_Hettinger@annie.ca',
+      status: 'Active',
       passed: 'No',
     },
   ];
@@ -77,6 +86,16 @@ export class AdvancedExampleFiltersComponent {
       },
       email: {
         title: 'Email',
+      },
+      status: {
+        title: 'Status',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Show only...',
+            list: ['Inactive', 'Active'].map(v =>({value: v, title: v}))
+          }
+        },
       },
       passed: {
         title: 'Passed',
