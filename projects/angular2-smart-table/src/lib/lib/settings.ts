@@ -57,7 +57,7 @@ export type ISortDirection = 'asc' | 'desc' | null; // null means: do not sort
 export type RowClassFunction = (row: Row) => string;
 export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
 export type ColumnValuePrepareFunction = (rawValue: string, cell: Cell) => string;
-export type ColumnFilterFunction = (cellValue: any, searchString: string, allData: any, cellName: string, rowData: any) => boolean;
+export type ColumnFilterFunction = (value: string, searchString: string) => boolean;
 export type ColumnComponentInitFunction = (component: any, cell: ViewCell) => void;
 
 export interface SanitizerSettings {

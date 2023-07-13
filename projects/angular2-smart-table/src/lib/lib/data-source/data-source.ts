@@ -1,5 +1,5 @@
 import {Observable, Subject} from 'rxjs';
-import {ISortDirection} from '../settings';
+import {ColumnFilterFunction, ISortDirection} from '../settings';
 
 export interface ISortConfig {
   field: string,
@@ -10,7 +10,7 @@ export interface ISortConfig {
 export interface IFilterConfig {
   field: string,
   search: string,
-  filter?: Function,
+  filter?: ColumnFilterFunction,
 }
 
 export interface IDataSourceFilter {

@@ -44,11 +44,11 @@ export class SelectFilterComponent extends DefaultFilter implements OnInit {
       .subscribe((value: string) => this.setFilter());
   }
 
-  onFilterValues(cellValue: string, search: string, data: any, cellName: string) {
+  onFilterValues(cellValue: string, search: string) {
     if (this.config.strict === undefined || this.config.strict) {
-      return defaultStringEqualsFilter(cellValue, search, data, cellName);
+      return defaultStringEqualsFilter(cellValue, search);
     } else {
-      return defaultStringInclusionFilter(cellValue, search, data, cellName);
+      return defaultStringInclusionFilter(cellValue, search);
     }
   }
 }
