@@ -73,6 +73,10 @@ export class Grid {
 
   setSettings(settings: Settings) {
     this.settings = settings;
+    this.recreateDataSet();
+  }
+
+  recreateDataSet() {
     this.dataSet = new DataSet([], this.settings.columns);
 
     if (this.source) {

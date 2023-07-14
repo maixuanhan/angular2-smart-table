@@ -266,10 +266,12 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
   onShowColumn(columnId: string) {
     this.grid.settings.columns[columnId].hide = false;
+    this.grid.recreateDataSet();
   }
 
   onHideColumn(columnId: string) {
     this.grid.settings.columns[columnId].hide = true;
+    this.grid.recreateDataSet();
   }
 
   private createRowSelectionEvent(row: Row | null): RowSelectionEvent {
