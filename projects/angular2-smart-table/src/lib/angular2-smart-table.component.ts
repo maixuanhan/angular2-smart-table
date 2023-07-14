@@ -20,6 +20,7 @@ import {
   EditEvent,
   RowSelectionEvent,
 } from './lib/events';
+import {Column} from "./lib/data-set/column";
 
 @Component({
   selector: 'angular2-smart-table',
@@ -258,10 +259,12 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     return deepExtend({}, this.defaultSettings, this.settings);
   }
 
-  getNotVisibleColumnIds(): string[] {
-    return (this.grid?.getColumns() ?? [])
-      .filter(column => column.hide)
-      .map(column => column.id);
+  getNotVisibleColumns(): Column[] {
+    return (this.grid?.getColumns() ?? []).filter(column => column.hide);
+  }
+
+  getNotVisibleColumnTitles() {
+    return this.getNotVisibleColumns().map(c => c.title);
   }
 
   onShowColumn(columnId: string) {
