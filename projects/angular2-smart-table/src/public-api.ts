@@ -8,6 +8,7 @@ export { DefaultEditor, Editor } from './lib/components/cell/cell-editors/defaul
 export { DefaultFilter, Filter } from './lib/components/filter/filter-types/default-filter'
 export { Cell } from './lib/lib/data-set/cell';
 export { Row } from './lib/lib/data-set/row';
+export { Column } from './lib/lib/data-set/column'
 export { DataSet } from './lib/lib/data-set/data-set';
 export { LocalDataSource } from './lib/lib/data-source/local/local.data-source';
 export { ServerDataSource } from './lib/lib/data-source/server/server.data-source';
