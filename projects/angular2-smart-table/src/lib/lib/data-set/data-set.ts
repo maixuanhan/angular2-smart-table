@@ -180,7 +180,7 @@ export class DataSet {
    * @param settings
    * @private
    */
-  createColumns(settings: any) {
+  createColumns(settings: IColumns) {
     for (const id in settings) {
       if (settings.hasOwnProperty(id)) {
         this.columns.push(new Column(id, settings[id], this));

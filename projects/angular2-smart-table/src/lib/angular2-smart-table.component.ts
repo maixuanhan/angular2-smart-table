@@ -21,6 +21,7 @@ import {
   RowSelectionEvent,
 } from './lib/events';
 import {Column} from "./lib/data-set/column";
+import {TagsListEntry} from "./components/tags/tag/tag.component";
 
 @Component({
   selector: 'angular2-smart-table',
@@ -123,6 +124,7 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     if (this.grid) {
       if (changes['settings']) {
         this.grid.setSettings(this.prepareSettings());
+        this.updateNotVisibleColumnTagList();
       }
       if (changes['source']) {
         this.source = this.prepareSource();
@@ -220,6 +222,7 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   initGrid() {
     this.source = this.prepareSource();
     this.grid = new Grid(this.source, this.prepareSettings());
+    this.updateNotVisibleColumnTagList();
 
     this.subscribeToOnSelectRow();
     /** Delay a bit the grid init event trigger to prevent empty rows */
@@ -263,8 +266,9 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     return (this.grid?.getColumns() ?? []).filter(column => column.hide);
   }
 
-  getNotVisibleColumnTagsList() {
-    return this.getNotVisibleColumns().map(c => ({
+  notVisibleColumnTagsList: TagsListEntry[] = [];
+  updateNotVisibleColumnTagList() {
+    this.notVisibleColumnTagsList = this.getNotVisibleColumns().map(c => ({
       key: c.id,
       value: c.title,
     }));
@@ -273,11 +277,13 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   onShowColumn(columnId: string) {
     this.grid.settings.columns[columnId].hide = false;
     this.grid.recreateDataSet();
+    this.updateNotVisibleColumnTagList();
   }
 
   onHideColumn(columnId: string) {
     this.grid.settings.columns[columnId].hide = true;
     this.grid.recreateDataSet();
+    this.updateNotVisibleColumnTagList();
   }
 
   private createRowSelectionEvent(row: Row | null): RowSelectionEvent {
