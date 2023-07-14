@@ -4,7 +4,7 @@ import {CustomAction} from 'angular2-smart-table';
 @Component({
   selector: 'basic-example-custom-actions-item',
   template: `
-    <a href="#">{{action.name}} {{renderValue}} </a>
+    <a href="#">{{action.title}} {{renderValue}} </a>
   `,
 })
 export class BasicExampleCustomActionsItemComponent implements OnInit {
