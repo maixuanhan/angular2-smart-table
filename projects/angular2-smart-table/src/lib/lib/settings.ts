@@ -1,6 +1,5 @@
 import {Cell} from "./data-set/cell";
 import {Row} from "./data-set/row";
-import {ViewCell} from "../components/cell/cell-view-mode/view-cell";
 
 export interface Settings {
   columns: IColumns;
@@ -58,7 +57,7 @@ export type RowClassFunction = (row: Row) => string;
 export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
 export type ColumnValuePrepareFunction = (rawValue: string, cell: Cell) => string;
 export type ColumnFilterFunction = (value: string, searchString: string) => boolean;
-export type ColumnComponentInitFunction = (component: any, cell: ViewCell) => void;
+export type ColumnComponentInitFunction = (component: any, cell: Cell) => void;
 
 export interface SanitizerSettings {
   /**
@@ -122,7 +121,7 @@ export interface IColumn {
   compareFunction?: ColumnCompareFunction;
   valuePrepareFunction?: ColumnValuePrepareFunction;
   filterFunction?: ColumnFilterFunction;
-  onComponentInitFunction?: ColumnComponentInitFunction;
+  componentInitFunction?: ColumnComponentInitFunction;
 
   placeholder?: string;
   hide?: boolean;

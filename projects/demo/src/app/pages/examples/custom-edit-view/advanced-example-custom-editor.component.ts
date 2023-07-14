@@ -54,6 +54,7 @@ export class AdvancedExamplesCustomEditorComponent {
         title: 'Full Name',
         type: 'custom',
         renderComponent: CustomRenderComponent,
+        componentInitFunction: CustomRenderComponent.componentInit,
       },
       username: {
         title: 'User Name',

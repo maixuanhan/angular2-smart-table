@@ -43,7 +43,7 @@ export class Column {
   compareFunction?: Function;
   valuePrepareFunction?: ColumnValuePrepareFunction;
   filterFunction?: ColumnFilterFunction;
-  onComponentInitFunction?: ColumnComponentInitFunction;
+  componentInitFunction?: ColumnComponentInitFunction;
 
   constructor(public id: string, protected settings: IColumn, protected dataSet: DataSet) {
     this.type = this.settings.type ?? 'text';
@@ -69,7 +69,7 @@ export class Column {
     this.compareFunction = this.settings.compareFunction;
     this.valuePrepareFunction = this.settings.valuePrepareFunction;
     this.filterFunction = this.settings.filterFunction;
-    this.onComponentInitFunction = this.settings.onComponentInitFunction;
+    this.componentInitFunction = this.settings.componentInitFunction;
   }
 
   getConfig(): any {

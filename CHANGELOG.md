@@ -13,6 +13,7 @@ This document lists the changes introduced by this fork.
   * Change filters to not automatically ignore empty strings
   * Remove `andOperator` parameter from `setFilter()` and `addFilter()`
 * Fix inconsistent return types between `DataSource` methods and their `LocalDataSource` implementations
+* Change custom renderer initialization and remove `ViewCell` interface
 * Remove ng2-completer
 * Remove angular2-multiselect-dropdown
 * Remove date filter type

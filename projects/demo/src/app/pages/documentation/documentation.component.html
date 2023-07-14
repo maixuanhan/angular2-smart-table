@@ -200,11 +200,13 @@
       </td>
     </tr>
     <tr>
-      <td>onComponentInitFunction</td>
-      <td><span class="highlight">(component: any, cell: ViewCell) => void</span></td>
+      <td>componentInitFunction</td>
+      <td><span class="highlight">(component: any, cell: Cell) => void</span></td>
       <td>null</td>
       <td>
-        Function which will be invoked after <span class="highlight">renderComponent</span> instantiated and before ngOnInit hook. This function gets <span class="highlight">renderComponent</span> instance in first param and the <span class="highlight">ViewCell</span> as second param.
+        Function which will be invoked after <span class="highlight">renderComponent</span> instantiated and before ngOnInit hook.
+        This function gets <span class="highlight">renderComponent</span> instance in first param and the <span class="highlight">Cell</span> as second param.
+        Since version 3.0.0 this method is required to be implemented to initialize the renderedComponent with the cell (no magical property assigment happens anymore).
       </td>
     </tr>
     <tr>
