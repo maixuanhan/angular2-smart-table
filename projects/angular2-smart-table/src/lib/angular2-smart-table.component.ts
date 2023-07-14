@@ -263,8 +263,11 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
     return (this.grid?.getColumns() ?? []).filter(column => column.hide);
   }
 
-  getNotVisibleColumnTitles() {
-    return this.getNotVisibleColumns().map(c => c.title);
+  getNotVisibleColumnTagsList() {
+    return this.getNotVisibleColumns().map(c => ({
+      key: c.id,
+      value: c.title,
+    }));
   }
 
   onShowColumn(columnId: string) {

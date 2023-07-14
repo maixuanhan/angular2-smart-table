@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {TagsListEntry} from "../tag/tag.component";
 
 @Component({
     selector: 'angular2-smart-table-tags-list',
@@ -6,11 +7,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class TagsListComponent {
 
-    @Input() tags!: string[];
+    @Input() tags!: TagsListEntry[];
 
     @Output() close = new EventEmitter<string>();
 
-    closedTag(tag: string) {
-        this.close.emit(tag);
+    closedTag(tagKey: string) {
+        this.close.emit(tagKey);
     }
 }
