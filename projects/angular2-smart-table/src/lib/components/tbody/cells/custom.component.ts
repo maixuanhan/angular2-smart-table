@@ -44,7 +44,7 @@ export class TbodyCustomComponent {
   }
 
   buttonContent(action: CustomAction): string {
-    return action.customButtonContent ?? action.name;
+    return action.customButtonContent ?? action.title ?? action.name;
   }
 
   bypassSecurityTrustFor(action: CustomAction): SecurityTrustType {
