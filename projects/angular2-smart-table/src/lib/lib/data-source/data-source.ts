@@ -1,10 +1,10 @@
 import {Observable, Subject} from 'rxjs';
-import {ColumnFilterFunction, ISortDirection} from '../settings';
+import {ColumnCompareFunction, ColumnFilterFunction, ISortDirection} from '../settings';
 
 export interface ISortConfig {
   field: string,
   direction: ISortDirection,
-  compare?: Function,
+  compare?: ColumnCompareFunction,
 }
 
 export interface IFilterConfig {
@@ -129,7 +129,7 @@ export abstract class DataSource {
    *
    * Array of conf objects
    * [
-   *  {field: string, direction: asc|desc|null, compare?: Function|null},
+   *  {field: string, direction: asc|desc|null, compare?: ColumnCompareFunction|null},
    * ]
    * @param conf the configuration to add
    * @param doEmit indicates whether a sort event shall be emitted
@@ -145,7 +145,7 @@ export abstract class DataSource {
    *
    * Array of conf objects
    * [
-   *  {field: string, direction: asc|desc|null, compare?: Function|null},
+   *  {field: string, direction: asc|desc|null, compare?: ColumnCompareFunction|null},
    * ]
    * @param conf the configuration to add
    * @param doEmit indicates whether a sort event shall be emitted

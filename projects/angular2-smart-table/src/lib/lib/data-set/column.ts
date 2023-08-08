@@ -1,4 +1,5 @@
 import {
+  ColumnCompareFunction,
   ColumnComponentInitFunction,
   ColumnFilterFunction,
   ColumnValuePrepareFunction,
@@ -40,7 +41,7 @@ export class Column {
   editor: EditorSettings;
   filter: FilterSettings;
   renderComponent?: any;
-  compareFunction?: Function;
+  compareFunction?: ColumnCompareFunction;
   valuePrepareFunction?: ColumnValuePrepareFunction;
   filterFunction?: ColumnFilterFunction;
   componentInitFunction?: ColumnComponentInitFunction;

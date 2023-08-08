@@ -2,7 +2,7 @@ import {defaultComparator} from './local.sorter';
 import {LocalPager} from './local.pager';
 import {DataSource, IFilterConfig, IPagingConfig, ISortConfig} from '../data-source';
 import {deepExtend} from '../../helpers';
-import {ColumnFilterFunction} from "../../settings";
+import {ColumnCompareFunction, ColumnFilterFunction} from "../../settings";
 
 export class LocalDataSource extends DataSource {
 
@@ -162,7 +162,7 @@ export class LocalDataSource extends DataSource {
    *
    * Replaces all filters with the given array of filters.
    * [
-   *  {field: string, search: string, filter: Function|null},
+   *  {field: string, search: string, filter: ColumnCompareFunction|null},
    * ]
    *
    * @param conf the array of filters
@@ -177,7 +177,7 @@ export class LocalDataSource extends DataSource {
    *
    * Adds a filter to this data source.
    *
-   * {field: string, search: string, filter: Function|null},
+   * {field: string, search: string, filter: ColumnFilterFunction|null},
    *
    * @param fieldConf the filter config
    * @param doEmit true if an event shall be emitted that triggers a table refresh
@@ -240,7 +240,7 @@ export class LocalDataSource extends DataSource {
     return data.sort((a, b) => {
       for (const sc of sortConfig) {
         const dir: number = (sc.direction === 'asc') ? 1 : -1;
-        const compare: Function = sc.compare ? sc.compare : defaultComparator;
+        const compare: ColumnCompareFunction = sc.compare ? sc.compare : defaultComparator;
         let parts = sc.field.split(".");
         let propA = a;
         for (let i = 0; i < parts.length && typeof propA !== 'undefined'; i++) {

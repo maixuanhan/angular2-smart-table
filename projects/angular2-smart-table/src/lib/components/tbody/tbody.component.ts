@@ -23,6 +23,7 @@ import {
   EditConfirmEvent,
   EditEvent
 } from '../../lib/events';
+import {RowClassFunction} from "../../lib/settings";
 
 @Component({
   selector: '[angular2-st-tbody]',
@@ -36,7 +37,7 @@ export class NgxSmartTableTbodyComponent implements AfterViewInit, OnDestroy {
   @Input() deleteConfirm!: EventEmitter<DeleteConfirmEvent>;
   @Input() editConfirm!: EventEmitter<EditConfirmEvent>;
   @Input() editCancel!: EventEmitter<EditCancelEvent>;
-  @Input() rowClassFunction!: Function;
+  @Input() rowClassFunction!: RowClassFunction;
 
   @Output() edit = new EventEmitter<EditEvent>();
   @Output() delete = new EventEmitter<DeleteEvent>();
