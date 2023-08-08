@@ -87,7 +87,7 @@ export class AdvancedExampleFilterFunctionComponent {
       },
       companyName: {
         title: 'Company Name',
-        filterFunction: (cell: string, search: string) => {
+        filterFunction: (cell: any, search: string) => {
           if (search.length > 0 && search[0] === '-') {
             const re = new RegExp(search.substring(1), 'gi');
             return cell.match(re) === null;

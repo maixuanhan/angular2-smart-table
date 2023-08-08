@@ -260,14 +260,14 @@ export class LocalDataSource extends DataSource {
   protected filter(data: Array<any>): Array<any> {
     if (this.filterConf) {
       for (const filterConf of this.filterConf) {
-        const filter: ColumnFilterFunction = filterConf.filter ?? ((v, s) => v.toLowerCase().includes(s.toLowerCase()));
+        const filter: ColumnFilterFunction = filterConf.filter ?? ((v, s) => (v?.toString()??'').toLowerCase().includes(s.toLowerCase()));
         data = data.filter((el) => {
           let parts = filterConf.field.split(".");
           let prop = el;
           for (let i = 0; i < parts.length && typeof prop !== 'undefined'; i++) {
             prop = prop[parts[i]];
           }
-          return filter.call(null, `${prop ?? ''}`, filterConf.search);
+          return filter.call(null, prop, filterConf.search);
         });
       }
     }

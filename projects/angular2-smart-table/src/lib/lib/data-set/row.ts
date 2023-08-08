@@ -50,7 +50,7 @@ export class Row {
   process() {
     this.cells = [];
     this._dataSet.getColumns().forEach((column: Column) => {
-      this.cells.push(new Cell(`${this.data[column.id] ?? ''}`, this, column));
+      this.cells.push(new Cell(this.data[column.id], this, column));
     });
   }
 }

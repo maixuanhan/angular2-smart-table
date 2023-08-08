@@ -4,13 +4,14 @@ import {Row} from './row';
 export class Cell {
 
   newValue: string;
-  private cachedValue: string;
+
+  private cachedValue: unknown;
   private cachedPreparedValue: string;
 
-  constructor(protected value: string, protected row: Row, protected column: Column) {
-    this.newValue = value;
-    this.cachedValue = value;
+  constructor(protected value: unknown, protected row: Row, protected column: Column) {
+    this.cachedValue = this.value;
     this.cachedPreparedValue = this.getPreparedValue();
+    this.newValue = this.cachedPreparedValue;
   }
 
   getColumn(): Column {
@@ -32,14 +33,14 @@ export class Cell {
   }
 
   protected getPreparedValue(): string {
-    const prepare = this.column.valuePrepareFunction ?? ((v) => v);
+    const prepare = this.column.valuePrepareFunction ?? ((v) => (v?.toString()??''));
     return prepare.call(null, this.value, this);
   }
 
   /**
    * Returns the raw value that has not been post-processed by the valuePrepareFunction.
    */
-  getRawValue(): string {
+  getRawValue(): unknown {
     return this.value;
   }
 
@@ -65,6 +66,8 @@ export class Cell {
   }
 
   resetValue(): void {
-    this.newValue = this.getRawValue();
+    this.cachedValue = this.value;
+    this.cachedPreparedValue = this.getPreparedValue();
+    this.newValue = this.cachedPreparedValue;
   }
 }

@@ -54,9 +54,12 @@ export type IColumnType = 'text' | 'html' | 'custom';
 export type ISortDirection = 'asc' | 'desc' | null; // null means: do not sort
 
 export type RowClassFunction = (row: Row) => string;
+
+// TODO: instead of using any type, generify the functions depending on the actual type of the column data
+
 export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
-export type ColumnValuePrepareFunction = (rawValue: string, cell: Cell) => string;
-export type ColumnFilterFunction = (value: string, searchString: string) => boolean;
+export type ColumnValuePrepareFunction = (rawValue: any, cell: Cell) => string;
+export type ColumnFilterFunction = (value: any, searchString: string) => boolean;
 export type ColumnComponentInitFunction = (component: any, cell: Cell) => void;
 
 export interface SanitizerSettings {
