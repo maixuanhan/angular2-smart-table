@@ -3,10 +3,10 @@ import {Row} from './row';
 
 export class Cell {
 
-  newValue: string;
-
   private cachedValue: unknown;
   private cachedPreparedValue: string;
+
+  private newValue: string;
 
   constructor(protected value: unknown, protected row: Row, protected column: Column) {
     this.cachedValue = this.value;
@@ -45,7 +45,15 @@ export class Cell {
   }
 
   setValue(value: string) {
-    this.newValue = value;
+    const store = this.column.valueStoreFunction ?? ((v) => v);
+    this.newValue = store.call(null, value, this);
+  }
+
+  /**
+   * Returns the new raw value after being post-processed by the valueStoreFunction.
+   */
+  getNewRawValue(): any {
+    return this.newValue;
   }
 
   getId(): string {

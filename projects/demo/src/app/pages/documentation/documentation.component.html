@@ -364,12 +364,24 @@
       <td>valuePrepareFunction</td>
       <td><span class="highlight">Function</span></td>
       <td>
-        undefined
+        toString()
       </td>
       <td>
         Function that is used by the cell to compute the displayed value.
         <br>
-        This function will be invoked with two parameters: (rawValue: string, cell: Cell)
+        This function will be invoked with two parameters (rawValue: any, cell: Cell) and must produce a string.
+      </td>
+    </tr>
+    <tr>
+      <td>valueStoreFunction</td>
+      <td><span class="highlight">Function</span></td>
+      <td>
+        identity
+      </td>
+      <td>
+        Function that is used by the cell to convert an edited value (string) back to a value of the original type.
+        <br>
+        This function will be invoked with two parameters: (newValue: string, cell: Cell)
       </td>
     </tr>
     <tr>
@@ -423,7 +435,7 @@
       <td>
         Function run against the cell value when filtering is happening, returning a boolean indicating whether the filter matched.
         <br>
-        This function will be invoked with two parameters: (value: string, searchString: string)
+        This function will be invoked with two parameters: (value: any, searchString: string)
       </td>
     </tr>
     <tr class="section">

@@ -7,12 +7,12 @@ import {DefaultEditor} from './default-editor';
   styleUrls: ['./editor.component.scss'],
   template: `
     <textarea [ngClass]="inputClass"
-              class="form-control"
-              [(ngModel)]="cell.newValue"
+              [value]="cell.getValue()"
               [name]="cell.getId()"
               [disabled]="!cell.isEditable()"
               [placeholder]="cell.getTitle()"
               (click)="onClick.emit($event)"
+              (keyup)="cell.setValue($any($event.target).value)"
               (keydown.enter)="disableEnterKeySave || onEdited.emit()"
               (keydown.esc)="onStopEditing.emit()">
     </textarea>

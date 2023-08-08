@@ -59,6 +59,7 @@ export type RowClassFunction = (row: Row) => string;
 
 export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
 export type ColumnValuePrepareFunction = (rawValue: any, cell: Cell) => string;
+export type ColumnValueStoreFunction = (value: string, cell: Cell) => any;
 export type ColumnFilterFunction = (value: any, searchString: string) => boolean;
 export type ColumnComponentInitFunction = (component: any, cell: Cell) => void;
 
@@ -123,6 +124,7 @@ export interface IColumn {
   renderComponent?: any;
   compareFunction?: ColumnCompareFunction;
   valuePrepareFunction?: ColumnValuePrepareFunction;
+  valueStoreFunction?: ColumnValueStoreFunction;
   filterFunction?: ColumnFilterFunction;
   componentInitFunction?: ColumnComponentInitFunction;
 

@@ -3,6 +3,7 @@ import {
   ColumnComponentInitFunction,
   ColumnFilterFunction,
   ColumnValuePrepareFunction,
+  ColumnValueStoreFunction,
   EditorSettings,
   FilterSettings,
   IColumn,
@@ -43,6 +44,7 @@ export class Column {
   renderComponent?: any;
   compareFunction?: ColumnCompareFunction;
   valuePrepareFunction?: ColumnValuePrepareFunction;
+  valueStoreFunction?: ColumnValueStoreFunction;
   filterFunction?: ColumnFilterFunction;
   componentInitFunction?: ColumnComponentInitFunction;
 
@@ -69,6 +71,7 @@ export class Column {
 
     this.compareFunction = this.settings.compareFunction;
     this.valuePrepareFunction = this.settings.valuePrepareFunction;
+    this.valueStoreFunction = this.settings.valueStoreFunction;
     this.filterFunction = this.settings.filterFunction;
     this.componentInitFunction = this.settings.componentInitFunction;
   }

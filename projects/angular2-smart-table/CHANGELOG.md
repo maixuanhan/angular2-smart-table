@@ -7,6 +7,7 @@ This document lists the changes introduced by this fork.
 * Add Angular 16 support
 * Add proper typing to all settings
 * Improve signatures of `valuePrepareFunction`, and `filterFunction`
+* Add `valueStoreFunction` as counter-part of the `valuePrepareFunction`
 * Change how filters are configured:
   * Add `removeFilter()` method
   * Change `setFilter()` to always remove all existing filters, first

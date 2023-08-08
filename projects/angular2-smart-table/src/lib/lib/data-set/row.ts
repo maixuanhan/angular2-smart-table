@@ -38,7 +38,7 @@ export class Row {
 
   getNewData(): any {
     const values = Object.assign({}, this.data);
-    this.getCells().forEach((cell) => values[cell.getColumn().id] = cell.newValue);
+    this.getCells().forEach((cell) => values[cell.getColumn().id] = cell.getNewRawValue());
     return values;
   }
 

@@ -14,7 +14,7 @@ import {CheckboxEditorSettings} from "../../../lib/settings";
            [disabled]="!cell.isEditable()"
            [checked]="cell.getValue() === trueVal"
            (click)="onClick.emit($event)"
-           (change)="onChange($event)">
+           (change)="onChange($any($event.target).checked)">
     `,
 })
 export class CheckboxEditorComponent extends DefaultEditor implements OnInit {
@@ -35,7 +35,7 @@ export class CheckboxEditorComponent extends DefaultEditor implements OnInit {
     }
   }
 
-  onChange(event: any) {
-    this.cell.newValue = event.target.checked ? this.trueVal : this.falseVal;
+  onChange(newVal: boolean) {
+    this.cell.setValue(newVal ? this.trueVal : this.falseVal);
   }
 }
