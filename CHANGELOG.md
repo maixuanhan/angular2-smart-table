@@ -18,6 +18,7 @@ This document lists the changes introduced by this fork.
 * Remove ng2-completer
 * Remove angular2-multiselect-dropdown
 * Remove date filter type
+* Remove partially broken `selectRow` function
 * Remove deprecated settings
 * Remove undocumented settings
 

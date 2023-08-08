@@ -6,7 +6,7 @@ import {Row} from './lib/data-set/row';
 import {DataSource, DataSourceChangeEvent} from './lib/data-source/data-source';
 import {LocalDataSource} from './lib/data-source/local/local.data-source';
 import {Grid} from './lib/grid';
-import {deepExtend, getPageForRowIndex} from './lib/helpers';
+import {deepExtend} from './lib/helpers';
 import {RowClassFunction, Settings} from './lib/settings';
 import {
   CreateCancelEvent,
@@ -148,39 +148,6 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyed$.next();
-  }
-
-  selectRow(index: number, switchPageToSelectedRowPage: boolean = this.grid.settings.switchPageToSelectedRowPage!): void {
-    if (!this.grid) {
-      return;
-    }
-    this.grid.selectedRowIndex = index;
-    if (this.isIndexOutOfRange(index)) {
-      // we need to deselect all rows if we got an incorrect index
-      this.grid.dataSet.deselectAll();
-      this.emitSelectRow(null);
-      return;
-    }
-
-    if (switchPageToSelectedRowPage) {
-      const source: DataSource = this.source;
-      const paging: { page: number, perPage: number } = source.getPaging();
-      const page: number = getPageForRowIndex(index, paging.perPage);
-      index = index % paging.perPage;
-      this.grid.selectedRowIndex = index;
-
-      if (page !== paging.page) {
-        source.setPage(page);
-        return;
-      }
-
-    }
-
-    const row: Row = this.grid.getRows()[index];
-    if (row) {
-      this.grid.selectRow(row);
-      this.emitSelectRow(row);
-    }
   }
 
   onEditRowSelect(row: Row) {
