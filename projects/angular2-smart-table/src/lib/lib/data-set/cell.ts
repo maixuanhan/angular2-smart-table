@@ -10,8 +10,14 @@ export class Cell {
 
   constructor(protected value: unknown, protected row: Row, protected column: Column) {
     this.cachedValue = this.value;
-    this.cachedPreparedValue = this.getPreparedValue();
-    this.newValue = this.cachedPreparedValue;
+    if (this.row.index >= 0) {
+      this.cachedPreparedValue = this.getPreparedValue();
+      this.newValue = this.cachedPreparedValue;
+    } else {
+      // we must not call the valuePrepareFunction on freshly created rows that do not contain defined data
+      this.cachedPreparedValue = '';
+      this.newValue = '';
+    }
   }
 
   getColumn(): Column {
