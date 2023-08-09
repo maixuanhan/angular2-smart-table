@@ -1,3 +1,4 @@
+<ng-container *ngIf="grid !== undefined">
 <angular2-smart-table-tags-list
   [tags]="notVisibleColumnTagsList" (close)="onShowColumn($event)"
 ></angular2-smart-table-tags-list>
@@ -43,3 +44,4 @@
   [perPageSelectLabel]="perPageSelectLabel"
 >
 </angular2-smart-table-pager>
+</ng-container>

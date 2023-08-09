@@ -58,7 +58,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   isPagerDisplay!: boolean;
   rowClassFunction!: RowClassFunction;
 
-  grid!: Grid;
+  grid!: Grid; // initially undefined, but will never be set to undefined, so we do not add undefined type here
+
   defaultSettings: Settings = {
     mode: 'inline',
     selectMode: 'single',
@@ -121,7 +122,8 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
   private destroyed$: Subject<void> = new Subject<void>();
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-    if (this.grid) {
+    if (this.grid !== undefined) {
+      // grid is already created, just update the relevant properties
       if (changes['settings']) {
         this.grid.setSettings(this.prepareSettings());
         this.updateNotVisibleColumnTagList();
@@ -130,20 +132,32 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
         this.source = this.prepareSource();
         this.grid.setSource(this.source);
       }
-    } else {
-      this.initGrid();
+    } else if (this.settings !== undefined && this.source !== undefined) {
+      // create a new grid, but only if settings and source are already available
+
+      this.source = this.prepareSource();
+      this.grid = new Grid(this.source, this.prepareSettings());
+      this.updateNotVisibleColumnTagList();
+
+      this.subscribeToOnSelectRow();
+      /** Delay a bit the grid init event trigger to prevent empty rows */
+      setTimeout(() => {
+        this.afterGridInit.emit(this.grid.dataSet);
+      }, 10);
     }
 
-    // below we can assume all settings are defined (at least with the defaults)
-
-    this.tableId = this.grid.settings.attr!.id!;
-    this.tableClass = this.grid.settings.attr!.class!;
-    this.isHideHeader = this.grid.settings.hideHeader!;
-    this.isHideSubHeader = this.grid.settings.hideSubHeader!;
-    this.isPagerDisplay = this.grid.settings.pager!.display!;
-    this.perPageSelect = this.grid.settings.pager!.perPageSelect!;
-    this.perPageSelectLabel = this.grid.settings.pager!.perPageSelectLabel!;
-    this.rowClassFunction = this.grid.settings.rowClassFunction!;
+    // once everything is set up, we can copy some settings
+    // we use the settings from the grid, because those are enriched with the defaults
+    if (this.grid !== undefined) {
+      this.tableId = this.grid.settings.attr!.id!;
+      this.tableClass = this.grid.settings.attr!.class!;
+      this.isHideHeader = this.grid.settings.hideHeader!;
+      this.isHideSubHeader = this.grid.settings.hideSubHeader!;
+      this.isPagerDisplay = this.grid.settings.pager!.display!;
+      this.perPageSelect = this.grid.settings.pager!.perPageSelect!;
+      this.perPageSelectLabel = this.grid.settings.pager!.perPageSelectLabel!;
+      this.rowClassFunction = this.grid.settings.rowClassFunction!;
+    }
   }
 
   ngOnDestroy(): void {
@@ -184,19 +198,6 @@ export class Angular2SmartTableComponent implements OnChanges, OnDestroy {
 
   onExpandRow(row: Row) {
     this.grid.expandRow(row);
-  }
-
-  initGrid() {
-    this.source = this.prepareSource();
-    this.grid = new Grid(this.source, this.prepareSettings());
-    this.updateNotVisibleColumnTagList();
-
-    this.subscribeToOnSelectRow();
-    /** Delay a bit the grid init event trigger to prevent empty rows */
-    setTimeout(() => {
-      this.afterGridInit.emit(this.grid.dataSet);
-    }, 10);
-
   }
 
   prepareSource(): DataSource {

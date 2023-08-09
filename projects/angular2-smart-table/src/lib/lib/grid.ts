@@ -29,7 +29,7 @@ export class Grid {
   private sourceOnChangedSubscription!: Subscription;
   private sourceOnUpdatedSubscription!: Subscription;
 
-  constructor(source: DataSource, settings: any) {
+  constructor(source: DataSource, settings: Settings) {
     this.setSettings(settings);
     this.setSource(source);
   }
