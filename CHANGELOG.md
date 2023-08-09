@@ -4,7 +4,7 @@ This document lists the changes introduced by this fork.
 
 ## Version 3.0.0
 
-* Add Angular 16 support
+* Upgrade to Angular 16 
 * Add proper typing to all settings
 * Improve signatures of `valuePrepareFunction`, and `filterFunction`
 * Add `valueStoreFunction` as counter-part of the `valuePrepareFunction`
@@ -21,6 +21,11 @@ This document lists the changes introduced by this fork.
 * Remove partially broken `selectRow` function
 * Remove deprecated settings
 * Remove undocumented settings
+
+**Note:** With Angular 16 several breaking changes were introduced, which forced us to also introduce breaking changes
+plus we cannot guarantee anymore, that the software is working with Angular 15 and below. This is why we decided to
+have a hard cut by introducing a new major release that is only compatible with Angular 16 onwards.
+If you want to stick with Angular 14 or Angular 15, please use version 2.10.0.
 
 ## Version 2.10.0
 
