@@ -118,7 +118,6 @@ export interface IColumn {
   class?: string;
   width?: string;
   sortDirection?: ISortDirection;
-  defaultSortDirection?: ISortDirection;
   editor?: EditorSettings;
   filter?: FilterSettings;
   renderComponent?: any;
