@@ -28,8 +28,10 @@ export class SelectFilterComponent extends DefaultFilter implements OnInit {
 
   ngOnInit() {
     this.config = (this.column.filter as FilterSettings).config as ListFilterSettings;
-    if (this.config.strict === undefined || this.config.strict) {
-      this.column.filterFunction = (v, f) => v === f;
+    // if no filter function is provided, but filtering shall be strict, define the respective filter
+    const strict = this.config.strict === undefined || this.config.strict;
+    if (this.column.filterFunction === undefined && strict) {
+      this.column.filterFunction = (v, f) => v?.toString() === f;
     }
 
     const exist = this.inputControl.valueChanges;

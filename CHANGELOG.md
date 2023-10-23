@@ -2,6 +2,10 @@
 
 This document lists the changes introduced by this fork.
 
+## Version 3.1.0
+
+* The `strict` setting for `list` default filters is no longer overriding a custom provided filter function
+
 ## Version 3.0.0
 
 * Upgrade to Angular 16 
