@@ -280,7 +280,7 @@ export class Grid {
 
   getInitialSort(): ISortConfig | null {
     for (const column of this.getColumns()) {
-      if (column.isSortable && column.defaultSortDirection) {
+      if (column.isSortable && column.defaultSortDirection !== null) {
         return {
           field: column.id,
           direction: column.defaultSortDirection,
