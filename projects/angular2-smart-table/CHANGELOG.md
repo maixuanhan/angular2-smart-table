@@ -4,6 +4,7 @@ This document lists the changes introduced by this fork.
 
 ## Version 3.1.0
 
+* Add new setting `valueCreateFunction`
 * The `strict` setting for `list` default filters is no longer overriding a custom provided filter function
 * Fix that the default sort direction for all columns is `asc` instead of "no sort"
 

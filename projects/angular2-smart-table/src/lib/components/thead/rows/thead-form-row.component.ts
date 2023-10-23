@@ -12,7 +12,7 @@ import {CreateCancelEvent, CreateConfirmEvent} from '../../../lib/events';
     <td *ngIf="showActionColumnLeft" class="angular2-smart-actions">
       <angular2-st-actions [grid]="grid" [createConfirm]="createConfirm" [createCancel]="createCancel"></angular2-st-actions>
     </td>
-    <td *ngFor="let cell of getVisibleCells(grid.getNewRow().getCells())">
+    <td *ngFor="let cell of getVisibleCells(row.getCells())">
       <angular2-smart-table-cell
         [cell]="cell"
         [grid]="grid"
@@ -20,7 +20,7 @@ import {CreateCancelEvent, CreateConfirmEvent} from '../../../lib/events';
         [createConfirm]="createConfirm"
         [createCancel]="createCancel"
         [inputClass]="addInputClass"
-        [isInEditing]="grid.getNewRow().isInEditing"
+        [isInEditing]="true"
       ></angular2-smart-table-cell>
     </td>
     <td *ngIf="showActionColumnRight" class="angular2-smart-actions">
@@ -34,8 +34,8 @@ export class TheadFormRowComponent implements OnChanges {
   @Input() row!: Row;
   @Input() createConfirm!: EventEmitter<CreateConfirmEvent>;
   @Input() createCancel!: EventEmitter<CreateCancelEvent>;
-
   isMultiSelectVisible!: boolean;
+
   showActionColumnLeft!: boolean;
   showActionColumnRight!: boolean;
   addInputClass!: string;

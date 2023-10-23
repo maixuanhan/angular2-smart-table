@@ -13,6 +13,7 @@ import {CreateConfirmEvent, DeleteConfirmEvent, EditConfirmEvent} from './events
 export class Grid {
 
   createFormShown: boolean = false;
+  createFormRow!: Row;
 
   source!: DataSource;
   settings!: Settings;
@@ -65,10 +66,6 @@ export class Grid {
 
   getExpandedRowComponentClass(): Type<any> | undefined {
     return this.settings.expand?.component;
-  }
-
-  getNewRow(): Row {
-    return this.dataSet.newRow;
   }
 
   setSettings(settings: Settings) {
@@ -131,14 +128,11 @@ export class Grid {
   }
 
   create(row: Row, confirmEmitter: EventEmitter<CreateConfirmEvent>) {
-
     const deferred = new Deferred();
     deferred.promise.then((newData) => {
       newData = newData ? newData : row.getNewData();
-      this.source.prepend(newData).then(() => {
-        this.createFormShown = false;
-        this.dataSet.createNewRow();
-      });
+      this.createFormShown = false;
+      this.source.prepend(newData).then();
     }).catch((err) => {
       // doing nothing
     });
@@ -348,5 +342,15 @@ export class Grid {
     }
     const maxPageAmount: number = Math.ceil(source.count() / perPage);
     return maxPageAmount ? Math.min(pageToSelect, maxPageAmount) : pageToSelect;
+  }
+
+  showCreateForm() {
+    // if already shown, do nothing
+    if (this.createFormShown) return;
+
+    const vcf = this.settings.valueCreateFunction ?? (() => ({}));
+    this.createFormRow = new Row(-1, vcf(), this.dataSet);
+    this.createFormRow.isInEditing = true;
+    this.createFormShown = true;
   }
 }

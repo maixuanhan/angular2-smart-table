@@ -3,9 +3,6 @@ import {Column} from './column';
 import {IColumns} from "../settings";
 
 export class DataSet {
-
-  newRow!: Row;
-
   protected data: Array<Row> = [];
   protected columns: Array<Column> = [];
   protected rows: Array<Row> = [];
@@ -16,8 +13,6 @@ export class DataSet {
   constructor(data: Array<any> = [], protected columnSettings: IColumns) {
     this.createColumns(columnSettings);
     this.setData(data);
-    // TODO: fix that the "new row" is always created, even when the table is not even configured to add new rows
-    this.createNewRow();
   }
 
   setData(data: Array<any>, selectedRows: Array<any> = []) {
@@ -168,14 +163,6 @@ export class DataSet {
       // this branch is unreachable, because the if-else is exhaustive, but stupid typescript compilers do not see that
       return null;
     }
-  }
-
-  createNewRow() {
-    // TODO: the empty object is invalid data in general and is very likely breaking almost every other function
-    //       in particular, custom valuePrepareFunction can explode (see the related hack in the Cell's constructor)
-    //       we should some day fix this by defining a valueCreateFunction that can create a reasonable default object
-    this.newRow = new Row(-1, {}, this);
-    this.newRow.isInEditing = true;
   }
 
   /**

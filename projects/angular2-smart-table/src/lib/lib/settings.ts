@@ -18,6 +18,7 @@ export interface Settings {
   expand?: Expand;
   pager?: Pager;
   rowClassFunction?: RowClassFunction;
+  valueCreateFunction?: ValueCreateFunction;
   selectMode?: 'single' | 'multi' | 'multi_filtered';
   switchPageToSelectedRowPage?: boolean;
 }
@@ -58,6 +59,7 @@ export type RowClassFunction = (row: Row) => string;
 // TODO: instead of using any type, generify the functions depending on the actual type of the column data
 
 export type ColumnCompareFunction = (direction: number, left: any, right: any) => number;
+export type ValueCreateFunction = () => any;
 export type ColumnValuePrepareFunction = (rawValue: any, cell: Cell) => string;
 export type ColumnValueStoreFunction = (value: string, cell: Cell) => any;
 export type ColumnFilterFunction = (value: any, searchString: string) => boolean;

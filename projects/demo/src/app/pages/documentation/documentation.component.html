@@ -888,9 +888,17 @@
     <tr>
       <td>rowClassFunction</td>
       <td><span class="highlight">Function</span></td>
-      <td>row</td>
+      <td>A function producing empty string.</td>
       <td>
-        Handle css class for each row in the table
+        Takes `row` as argument and returns `string` CSS class.
+      </td>
+    </tr>
+    <tr>
+      <td>valueCreateFunction</td>
+      <td><span class="highlight">Function</span></td>
+      <td></td>
+      <td>
+        Takes no arguments and produces a valid `Object` with the type of the underlying data.
       </td>
     </tr>
   </table>

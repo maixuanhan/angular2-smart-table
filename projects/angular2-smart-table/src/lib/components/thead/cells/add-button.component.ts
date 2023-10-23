@@ -62,7 +62,7 @@ export class AddButtonComponent implements AfterViewInit, OnChanges {
         source: this.source,
       });
     } else {
-      this.grid.createFormShown = true;
+      this.grid.showCreateForm();
     }
   }
 }

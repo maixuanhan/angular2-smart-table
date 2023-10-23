@@ -27,7 +27,7 @@ export class TheadCreateCancelComponent implements OnChanges {
   onCreate(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.grid.create(this.grid.getNewRow(), this.createConfirm);
+    this.grid.create(this.grid.createFormRow, this.createConfirm);
   }
 
   onCancelCreate(event: MouseEvent) {
@@ -35,7 +35,7 @@ export class TheadCreateCancelComponent implements OnChanges {
     event.stopPropagation();
     this.grid.createFormShown = false;
     this.createCancel.emit({
-      discardedData: this.grid.getNewRow().getNewData(),
+      discardedData: this.grid.createFormRow.getNewData(),
       source: this.grid.source,
     });
   }
