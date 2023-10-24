@@ -4,20 +4,12 @@ import {Row} from './row';
 export class Cell {
 
   private cachedValue: unknown;
-  private cachedPreparedValue: string;
+  private cachedPreparedValue: string = '';
 
-  private newValue: string;
+  private newValue: unknown;
 
   constructor(protected value: unknown, protected row: Row, protected column: Column) {
-    this.cachedValue = this.value;
-    if (this.row.index >= 0) {
-      this.cachedPreparedValue = this.getPreparedValue();
-      this.newValue = this.cachedPreparedValue;
-    } else {
-      // we must not call the valuePrepareFunction on freshly created rows that do not contain defined data
-      this.cachedPreparedValue = '';
-      this.newValue = '';
-    }
+    this.resetValue();
   }
 
   getColumn(): Column {
@@ -32,15 +24,23 @@ export class Cell {
    * Gets the value (after post-processing with valuePrepareFunction).
    */
   getValue(): string {
-    if (this.cachedValue === this.value) return this.cachedPreparedValue;
-    this.cachedPreparedValue = this.getPreparedValue();
-    this.cachedValue = this.value;
+    if (this.cachedValue !== this.value) {
+      this.cachedPreparedValue = this.getPreparedValue();
+      this.cachedValue = this.value;
+    }
     return this.cachedPreparedValue;
   }
 
   protected getPreparedValue(): string {
-    const prepare = this.column.valuePrepareFunction ?? ((v) => (v?.toString()??''));
-    return prepare.call(null, this.value, this);
+    try {
+      const prepare = this.column.valuePrepareFunction ?? ((v) => (v?.toString() ?? ''));
+      return prepare.call(null, this.value, this);
+    } catch (_) {
+      console.error(`The valuePrepareFunction of column ${this.column.id} threw an error. Using simple toString() as fallback.`);
+      console.error('Please check the implementation of valuePrepareFunction.');
+      console.error('If this error was raised when creating a new row, please also check the implementation of valueCreateFunction.');
+      return this.value?.toString() ?? '';
+    }
   }
 
   /**
@@ -81,7 +81,7 @@ export class Cell {
 
   resetValue(): void {
     this.cachedValue = this.value;
+    this.newValue = this.value;
     this.cachedPreparedValue = this.getPreparedValue();
-    this.newValue = this.cachedPreparedValue;
   }
 }
