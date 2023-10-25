@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {DataSource} from '../../lib/data-source/data-source';
+import {DataSource, DataSourceChangeEvent} from '../../lib/data-source/data-source';
 
 @Component({
   selector: 'angular2-smart-table-pager',
@@ -85,7 +85,7 @@ export class PagerComponent implements OnChanges {
         this.perPage = this.source.getPaging().perPage;
         this.currentPerPage = this.perPage;
         this.count = this.source.count();
-        if (this.isPageOutOfBounce()) {
+        if (this.isPageOutOfBounds()) {
           this.source.setPage(--this.page);
         }
 
@@ -101,7 +101,7 @@ export class PagerComponent implements OnChanges {
    * if a new element was added to the beginning of the table - then to the first page
    * @param changes
    */
-  processPageChange(changes: any) {
+  processPageChange(changes: DataSourceChangeEvent) {
     if (changes.action === 'prepend') {
       this.source.setPage(1);
     }
@@ -140,7 +140,7 @@ export class PagerComponent implements OnChanges {
     return Math.ceil(this.count / this.perPage);
   }
 
-  isPageOutOfBounce(): boolean {
+  isPageOutOfBounds(): boolean {
     return (this.page * this.perPage) >= (this.count + this.perPage) && this.page > 1;
   }
 

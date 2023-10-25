@@ -64,13 +64,12 @@ export class ServerDataSource extends LocalDataSource {
       return data;
     }
 
-    throw new Error(`Data must be an array.
-    Please check that data extracted from the server response by the key '${this.conf.dataKey}' exists and is array.`);
+    throw new Error(`Data must be an array. Please check that data extracted from the server response by the key '${this.conf.dataKey}' exists and is array.`);
   }
 
   /**
    * Extracts total rows count from the server response
-   * Looks for the count in the heders first, then in the response body
+   * Looks for the count in the headers first, then in the response body
    * @param res
    * @returns {any}
    */
